@@ -1,11 +1,8 @@
 export default class LoginUtils {
     private static url : string = 'https://api.github.com/graphql';
-    private static accessToken: string = '81e417a19b4d639547dc29e544032c24c7b972cf';
-    private static userAgentHeader: string = 'user-agent';
-    private static userAgentHeaderValue: string = 'lukaso89';
 
-    static getUrl() : string {
-        return this.url + '?access_token=' + this.accessToken; 
+    static getUrl(accessToken: string) : string {
+        return this.url + '?access_token=' + accessToken; 
     }
 
     static getHeaders() : Headers {

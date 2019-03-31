@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import UserBar from './components/UserBar';
+import Stats from './components/Stats';
 import './App.css';
 
 class App extends Component { 
   render() {
     return (
       <div>
-          <UserBar/>
+          <Stats classes=''/>
       </div>
     );
   }
