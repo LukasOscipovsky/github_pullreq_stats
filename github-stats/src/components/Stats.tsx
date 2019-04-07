@@ -33,7 +33,14 @@ const styles = (theme:Theme) => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: 200,
-  }
+  },
+  card: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
+  },
 });
 
 class Stats extends Component<IProps, IState> { 
@@ -44,7 +51,8 @@ class Stats extends Component<IProps, IState> {
       author: '',
       participants: []
     };
-  }
+    this.handleClick = this.handleClick.bind(this);
+    }
 
   async getData() {
     axios.post(LoginUtils.getUrl(this.state.accessToken),{
@@ -89,21 +97,20 @@ class Stats extends Component<IProps, IState> {
         rc.push(rObj.author.login, rObj.comments.totalCount)
       } else {
         var index = rc.indexOf(entry);
-        entry.setComments = entry.getComments + rObj.comments.totalCount;
+        entry._comments = entry._comments + rObj.comments.totalCount;
         rc[index] = entry;
       }
     })
 
-    console.log(rc);
+   // console.log(rc);
 
     return rc;
   }
 
   contains(reviews : Array<Review>, login: string) : Review|null {
-
     reviews.forEach(re => {
-      console.log(re.getName)
-      if (re.getName === login) {
+      console.log(re._name)
+      if (re._name === login) {
         return re;
       }
     })
@@ -135,7 +142,7 @@ class Stats extends Component<IProps, IState> {
         >
         OK
         </Button>
-        <UserBar/>
+        <UserBar classes={classes}/>
       </form>
     );
   }

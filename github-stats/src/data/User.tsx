@@ -9,7 +9,6 @@ export default class User {
         this._avatar = avatar;
         this._approves = 0;
         this._comments = 0;
-
     }
 
     public set approves(approves: number) {

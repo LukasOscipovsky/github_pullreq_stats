@@ -1,25 +1,25 @@
 export default class Review {
-    private _name: string;
-    private _comments: number;
+    public _name: string;
+    public _comments: number;
 
     constructor() {
         this._name = '';
         this._comments = 0;
     }
 
-    public set setName(name: string) {
-        this._name = name;
-    }
+  //  public set setName(name: string) {
+ //       this._name = name;
+  //  }
 
-    public set setComments(comments: number) {
-        this._comments = comments;
-    }
+  //  public set setComments(comments: number) {
+  //      this._comments = comments;
+  //  }
 
-    public get getName(): string {
-        return this._name;
-    }
+  //  public get getName(): string {
+  //      return this._name;
+//}
 
-    public get getComments(): number {
-        return this._comments;
-    }
+ //   public get getComments(): number {
+//return this._comments;
+  //  }
 }
