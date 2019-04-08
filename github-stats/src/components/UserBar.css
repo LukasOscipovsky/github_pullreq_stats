@@ -3,60 +3,64 @@
     display: flex;
     overflow: visible;
     width: 100%;
-    align-items: flex-start;
+    align-items: center;
     text-align: center;
  } 
 
 .UserPicture {
-  width: 10%;
-  margin: 5px;
+  width: 3%;
+  margin: 10px;
   border:2px solid #343b3f;
+  border-radius: 5px;
 }
 
 .FormLabel {
-  font: Arial;
-  font-size: 15px;
-/*  font-family: Trim,"NOW G",Oscine;*/
+ /* font: Arial;
+  font-size: 25px;
   font-style: italic;
+  font-weight: 700;*/
+  font-family: Trim,'NowRegular',Oscine;
+  font-style: normal;
   font-weight: 700;
-  top: 0;
+  font-size: 16px;
+  text-align: center;
   letter-spacing: .0em;
-  word-spacing: normal;
+  word-spacing: initial;
   text-transform: none;
   text-indent: 0px;
   text-shadow: none;
-  font-weight: 700;
-  font-size: 16px;
   text-decoration: none;
   text-rendering: auto;
-  display: inline-block;
-  position: relative;
-  top: 30%;
-  left: 0;
-  padding: 10px;
   border: 0;
   overflow: hidden;
+  padding: 20px;
+  cursor: pointer;
+  display: inline-block;
 }
 
 .FormDiv {
   background: #f8fc00;
   height: 100%;
-  margin: 10px;
+  margin: 20px;
   width: 100%;
   align-items: flex-start;
   text-align: center;
   box-sizing: border-box;
   display: inline-block;
+  position: relative;
+  border-radius: 0px;
 }
 
 .CircularProgressbar {
-    width: 150px;
-    margin: auto;
- }
+    width: 7%;
+    margin: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+}
 
 .CircularProgressbar .CircularProgressbar-path {
     stroke: #f8fc00;
-    stroke-linecap: round;
+    stroke-linecap: butt;
     transition: stroke-dashoffset 0.5s ease 0s;
 }
   
@@ -66,9 +70,9 @@
   
 .CircularProgressbar .CircularProgressbar-text {
     fill: #f8fc00;
-    font-size: 20px;
+    font-size: 25px;
     font-family: Trim,"NOW G",Oscine;
-    font-style: italic;
+    font-style: normal;
     font-weight: 700;
     dominant-baseline: middle;
     text-anchor: middle;

@@ -126,7 +126,7 @@ class Stats extends Component<IProps, IState> {
     const { classes } = this.props;
 
     return (
-      <form className={classes.container}>
+      <div className='Stats'>
         <TextField
           id="standard-name"
           label="Access Token"
@@ -143,7 +143,12 @@ class Stats extends Component<IProps, IState> {
         OK
         </Button>
         <UserBar classes={classes}/>
-      </form>
+        <UserBar classes={classes}/>
+        <UserBar classes={classes}/>
+        <UserBar classes={classes}/>
+        <UserBar classes={classes}/>
+        <UserBar classes={classes}/>
+      </div>
     );
   }
 }
