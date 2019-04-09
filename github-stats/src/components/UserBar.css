@@ -3,27 +3,26 @@
     display: flex;
     overflow: visible;
     width: 100%;
+    max-width: 50%;
     align-items: center;
     text-align: center;
+    flex-wrap: wrap;               /* enable flex items to wrap */ 
+    justify-content: center;  
  } 
 
 .UserPicture {
-  width: 3%;
-  margin: 10px;
-  border:2px solid #343b3f;
+  width: 6%;
+  margin: 15px;
+  border: 2px solid #343b3f;
   border-radius: 5px;
 }
 
 .FormLabel {
- /* font: Arial;
-  font-size: 25px;
-  font-style: italic;
-  font-weight: 700;*/
-  font-family: Trim,'NowRegular',Oscine;
+  font-family: Trim,'Now-Bold',Oscine;
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
-  text-align: center;
+  color: #242d34;
   letter-spacing: .0em;
   word-spacing: initial;
   text-transform: none;
@@ -35,25 +34,24 @@
   overflow: hidden;
   padding: 20px;
   cursor: pointer;
-  display: inline-block;
+  display: block;
 }
 
 .FormDiv {
   background: #f8fc00;
-  height: 100%;
   margin: 20px;
-  width: 100%;
+  width: 50%;
   align-items: flex-start;
   text-align: center;
   box-sizing: border-box;
   display: inline-block;
   position: relative;
-  border-radius: 0px;
+  border-radius: 2px;
 }
 
 .CircularProgressbar {
-    width: 7%;
-    margin: 10px;
+    width: 8%;
+    margin: 15px;
     padding-left: 10px;
     border-radius: 5px;
 }
@@ -70,8 +68,8 @@
   
 .CircularProgressbar .CircularProgressbar-text {
     fill: #f8fc00;
-    font-size: 25px;
-    font-family: Trim,"NOW G",Oscine;
+    font-size: 30px;
+    font-family: Trim,"Now-Bold",Oscine;
     font-style: normal;
     font-weight: 700;
     dominant-baseline: middle;

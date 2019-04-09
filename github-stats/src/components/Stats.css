@@ -1,5 +1,8 @@
 @import './UserBar.css';
 
 .Stats {
-    background: #242d34
+    background: #242d34;
+    display: block;
+    flex-wrap: wrap;        
+    justify-content: center;  
 }
