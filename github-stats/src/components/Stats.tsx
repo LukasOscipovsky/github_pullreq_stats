@@ -7,7 +7,6 @@ import LoginUtils from '../utils/LoginUtils';
 import axios from 'axios';
 import { withStyles, Theme } from '@material-ui/core/styles';
 import User from '../data/User';
-import Review from '../data/Review';
 
 interface IProps {
   classes: any;
@@ -15,7 +14,6 @@ interface IProps {
 
 interface IState {
   accessToken: string,
-  author: string
   participants: Array<User>
 }
 
@@ -44,14 +42,15 @@ const styles = (theme:Theme) => ({
 });
 
 class Stats extends Component<IProps, IState> { 
+  
   constructor(props: IProps) {
     super(props);
     this.state = {
-      accessToken: '',
-      author: '',
+      accessToken: '3c1745ac16e137b72bc0d799058b968b21311df4',
       participants: []
-    };
-    this.handleClick = this.handleClick.bind(this);
+    }
+
+    this.getData();
     }
 
   async getData() {
@@ -63,91 +62,57 @@ class Stats extends Component<IProps, IState> {
       const pr = response.data.data.organization.repository.pullRequest;
 
       this.setState({
-        author: pr.author.login,
-        participants: this.parse(pr.participants.nodes, pr.reviews.nodes)
+        participants: this.parse(pr.participants.nodes, pr.reviews.nodes, pr.author.login)
       });
     })
-
-    console.log(this.state.participants)
   }
 
-  parse(participants: Array<String>, reviews: Array<String>) : Array<User> {
+  parse(participants: Array<String>, reviews: Array<String>, author: string) : Array<User> {
     var ps: Array<User> = [];
 
     participants.forEach(p => {
       var pObj = JSON.parse(JSON.stringify(p));
-      if (this.state.author !== pObj.login) {
-        ps.push(new User(pObj.login, pObj.avatarUrl))
+      var user =new User(pObj.login, pObj.avatarUrl);
+      
+      if (author !== pObj.login) {
+        user.approves++;
       }
+
+      ps.push(user);
     })
 
-    this.getReviews(reviews);
+    this.updateUsersWithReviews(ps, reviews)
 
     return ps;
   }
 
-  getReviews(reviews: Array<String>) : Array<Review> {
-    var rc: Array<Review> = []; 
-
+  updateUsersWithReviews(participants: Array<User>,reviews: Array<String>) {
     reviews.forEach(r => {
-      var rObj = JSON.parse(JSON.stringify(r));
-      var entry = this.contains(rc, rObj.author.login);
-
-      if (entry === null) {
-        rc.push(rObj.author.login, rObj.comments.totalCount)
-      } else {
-        var index = rc.indexOf(entry);
-        entry._comments = entry._comments + rObj.comments.totalCount;
-        rc[index] = entry;
-      }
-    })
-
-   // console.log(rc);
-
-    return rc;
+     var rObj = JSON.parse(JSON.stringify(r));
+     this.update(participants, rObj.author.login, rObj.comments.totalCount);
+    });
+    return participants;
   }
 
-  contains(reviews : Array<Review>, login: string) : Review|null {
-    reviews.forEach(re => {
-      console.log(re._name)
-      if (re._name === login) {
-        return re;
+  update(users : Array<User>, login: string, comments: number) {
+    users.forEach(user => {
+      if (user.name == login) {
+        user.comments = user.comments + comments;
       }
     })
-
-    return null;
   }
 
-  handleClick() : void {
-    this.getData()
+  compsFromList() {
+    return this.state.participants
+    .map((p) => {
+      return (<UserBar user={p} approves={1}/>)
+    });
   }
 
   render() {
-    const { classes } = this.props;
-
     return (
       <div className='Stats'>
-        <TextField
-          id="standard-name"
-          label="Access Token"
-          className={classes.textField}
-          value={this.state.accessToken}
-          onChange={(e) => this.setState({ accessToken: e.target.value })}
-          margin="normal"
-        />
-        <Button
-          name="OK"
-          className={classes.button}
-          onClick={() => this.handleClick()}  
-        >
-        OK
-        </Button>
-        <UserBar classes={classes}/>
-        <UserBar classes={classes}/>
-        <UserBar classes={classes}/>
-        <UserBar classes={classes}/>
-        <UserBar classes={classes}/>
-        <UserBar classes={classes}/>
+        {this.compsFromList()}
       </div>
     );
   }

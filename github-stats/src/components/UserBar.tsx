@@ -4,9 +4,11 @@ import FormLabel from '@material-ui/core/FormLabel';
 import CardMedia from '@material-ui/core/CardMedia';
 import Card from '@material-ui/core/Card';
 import { withStyles, Theme } from '@material-ui/core/styles';
+import User from '../data/User';
 
 interface IProps {
-  classes: any;
+  user: User,
+  approves: number
 }
 
 class UserBar extends Component<IProps, {}> { 
@@ -19,20 +21,15 @@ class UserBar extends Component<IProps, {}> {
     }
     
     getPercentage() : number {
-        let approved:number = 15;
-        let all:number = 49;
-    
-        return this.calculatePercentage(approved, all)
+        return Math.floor((100 * this.props.user.approves) / this.props.approves);
     }
 
     render() {
-        const { classes } = this.props;
-
         return (
           <div className="UserBar">
-            <img src={require('../assets/images/lukas.jpg')} className='UserPicture' />
+            <img src={this.props.user.avatar} className='UserPicture' />
             <div className='FormDiv'>
-              <label className='FormLabel'>LUKAS OSCIPOVSKY</label>
+              <label className='FormLabel'>{this.props.user.name}</label>
             </div>
             <CircularProgressbar
               percentage={this.getPercentage()}

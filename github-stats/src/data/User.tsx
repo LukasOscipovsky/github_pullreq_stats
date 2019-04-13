@@ -5,7 +5,7 @@ export default class User {
     private _comments: number;
 
     constructor(name: string, avatar: string) {
-        this._name = name;
+        this._name = name.toUpperCase();
         this._avatar = avatar;
         this._approves = 0;
         this._comments = 0;

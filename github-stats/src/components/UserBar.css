@@ -1,13 +1,8 @@
  .UserBar {
     background: #242d34;
     display: flex;
-    overflow: visible;
-    width: 100%;
-    max-width: 50%;
     align-items: center;
-    text-align: center;
-    flex-wrap: wrap;               /* enable flex items to wrap */ 
-    justify-content: center;  
+    justify-content: center;
  } 
 
 .UserPicture {
@@ -41,10 +36,9 @@
   background: #f8fc00;
   margin: 20px;
   width: 50%;
-  align-items: flex-start;
+  align-items: center;
   text-align: center;
   box-sizing: border-box;
-  display: inline-block;
   position: relative;
   border-radius: 2px;
 }
@@ -68,7 +62,7 @@
   
 .CircularProgressbar .CircularProgressbar-text {
     fill: #f8fc00;
-    font-size: 30px;
+    font-size: 25px;
     font-family: Trim,"Now-Bold",Oscine;
     font-style: normal;
     font-weight: 700;

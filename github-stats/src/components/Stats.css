@@ -2,7 +2,9 @@
 
 .Stats {
     background: #242d34;
-    display: block;
-    flex-wrap: wrap;        
-    justify-content: center;  
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    justify-content: center;
 }
