@@ -42,48 +42,73 @@ const styles = (theme:Theme) => ({
 });
 
 class Stats extends Component<IProps, IState> { 
-  
   constructor(props: IProps) {
     super(props);
     this.state = {
-      accessToken: '3c1745ac16e137b72bc0d799058b968b21311df4',
+      accessToken: '',
       participants: []
     }
-
-    this.getData();
+    this.getData(2);
     }
 
-  async getData() {
+  async getData(prNumber: number) {
     axios.post(LoginUtils.getUrl(this.state.accessToken),{
-      query: LoginUtils.getQuery(137),
+      query: LoginUtils.getQuery2(prNumber),
       headers: LoginUtils.getHeaders()
     })
     .then(response => {
-      const pr = response.data.data.organization.repository.pullRequest;
+      var prs = response.data.data.organization.repository.pullRequests.nodes;
 
       this.setState({
-        participants: this.parse(pr.participants.nodes, pr.reviews.nodes, pr.author.login)
+        participants: this.parseParent(prs)
       });
     })
   }
 
-  parse(participants: Array<String>, reviews: Array<String>, author: string) : Array<User> {
-    var ps: Array<User> = [];
+  parseParent(prs: Array<String>) : Array<User> {
+    var users: Array<User> = [];
 
+    prs.forEach(pr => {
+      var pObj = JSON.parse(JSON.stringify(pr));
+      this.parse(users, pObj.participants.nodes, pObj.reviews.nodes, pObj.author.login);
+
+      console.log(users);
+    });
+
+    return users;
+  }
+
+  parse(users: Array<User>,participants: Array<String>, reviews: Array<String>, author: string) {
     participants.forEach(p => {
       var pObj = JSON.parse(JSON.stringify(p));
-      var user =new User(pObj.login, pObj.avatarUrl);
+      var user = this.getUser(users, pObj.login, pObj.avatarUrl);
       
-      if (author !== pObj.login) {
-        user.approves++;
-      }
+      if (user === null) {
+        var newUser = new User(pObj.login, pObj.avatarUrl);
 
-      ps.push(user);
+        if (author !== pObj.login) {
+          newUser.approves++;
+        }
+
+        users.push(newUser);
+      } else {
+        if (author !== pObj.login) {
+          user.approves++;
+        }
+      }
     })
 
-    this.updateUsersWithReviews(ps, reviews)
+    this.updateUsersWithReviews(users, reviews)
+  }
 
-    return ps;
+  getUser(users: Array<User>, name: string, avatarUrl: string): User|null {
+    users.forEach(u => {
+      if (name === u.name) {
+        return u;
+      }
+    })
+
+    return null;
   }
 
   updateUsersWithReviews(participants: Array<User>,reviews: Array<String>) {

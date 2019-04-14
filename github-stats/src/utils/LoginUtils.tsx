@@ -50,4 +50,46 @@ export default class LoginUtils {
             }
           }`
     }
+
+    static getQuery2(number: number) : string {
+      return `query {
+        organization(login: "performgroup") {
+          repository(name: "rp-rights-platform") {
+            pullRequests(first: ${number}, states: CLOSED) {
+              nodes {
+              author {
+                login
+              }
+              reviews(first: 100, states: COMMENTED) {
+                nodes {
+                  comments(first: 100) {
+                   totalCount 
+                  }
+                  author {
+                    login
+                  }
+                }
+              }
+              reviewRequests(first: 100) {
+                nodes {
+                  requestedReviewer {
+                    ... on User {
+                      login
+                      avatarUrl
+                    }
+                  }
+                }
+              }
+              participants(first: 100) {
+                nodes {
+                  login
+                  avatarUrl
+                }
+              }
+            }
+          }
+          }
+        }
+      }`
+  }
 }

@@ -35,11 +35,9 @@
 .FormDiv {
   background: #f8fc00;
   margin: 20px;
-  width: 50%;
+  width: 500px;
   align-items: center;
   text-align: center;
-  box-sizing: border-box;
-  position: relative;
   border-radius: 2px;
 }
 
