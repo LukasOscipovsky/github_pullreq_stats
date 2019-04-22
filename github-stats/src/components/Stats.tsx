@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import './Stats.css';
 import LoginUtils from '../utils/LoginUtils';
 import axios from 'axios';
-import { withStyles, Theme } from '@material-ui/core/styles';
 import User from '../data/User';
 
 interface IProps {
@@ -17,30 +16,6 @@ interface IState {
   participants: Array<User>
 }
 
-const styles = (theme:Theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 400,
-  },
-  button: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
-  card: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-});
-
 class Stats extends Component<IProps, IState> { 
   constructor(props: IProps) {
     super(props);
@@ -48,7 +23,7 @@ class Stats extends Component<IProps, IState> {
       accessToken: '',
       participants: []
     }
-    this.getData(2);
+    this.getData(10);
     }
 
   async getData(prNumber: number) {
@@ -70,45 +45,50 @@ class Stats extends Component<IProps, IState> {
 
     prs.forEach(pr => {
       var pObj = JSON.parse(JSON.stringify(pr));
-      this.parse(users, pObj.participants.nodes, pObj.reviews.nodes, pObj.author.login);
-
-      console.log(users);
+      this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login);
     });
 
     return users;
   }
 
-  parse(users: Array<User>,participants: Array<String>, reviews: Array<String>, author: string) {
+  parse(users: Array<User>, participants: Array<String>, reviewRequests: Array<String>, reviews: Array<String>, author: string) {
+    reviewRequests.forEach(rqst => {
+      var rObj = JSON.parse(JSON.stringify(rqst));
+      var user = users.find(user => user.name === rObj.requestedReviewer.login);
+
+      if (user == undefined) {
+        var newUser = new User(rObj.requestedReviewer.login, rObj.requestedReviewer.avatarUrl);
+
+        newUser.total++;
+
+        users.push(newUser);
+      } else {
+        user.total++;
+      }
+    });
+    
     participants.forEach(p => {
       var pObj = JSON.parse(JSON.stringify(p));
-      var user = this.getUser(users, pObj.login, pObj.avatarUrl);
-      
-      if (user === null) {
+      var user = users.find(user => user.name === pObj.login);
+
+      if (user == undefined) {
         var newUser = new User(pObj.login, pObj.avatarUrl);
 
         if (author !== pObj.login) {
           newUser.approves++;
+          newUser.total++;
         }
 
         users.push(newUser);
       } else {
         if (author !== pObj.login) {
           user.approves++;
+          user.total++;
         }
       }
     })
 
     this.updateUsersWithReviews(users, reviews)
-  }
-
-  getUser(users: Array<User>, name: string, avatarUrl: string): User|null {
-    users.forEach(u => {
-      if (name === u.name) {
-        return u;
-      }
-    })
-
-    return null;
   }
 
   updateUsersWithReviews(participants: Array<User>,reviews: Array<String>) {
@@ -128,9 +108,11 @@ class Stats extends Component<IProps, IState> {
   }
 
   compsFromList() {
+    console.log(this.state.participants);
+
     return this.state.participants
     .map((p) => {
-      return (<UserBar user={p} approves={1}/>)
+      return (<UserBar user={p}/>)
     });
   }
 

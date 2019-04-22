@@ -8,7 +8,6 @@ import User from '../data/User';
 
 interface IProps {
   user: User,
-  approves: number
 }
 
 class UserBar extends Component<IProps, {}> { 
@@ -21,7 +20,7 @@ class UserBar extends Component<IProps, {}> {
     }
     
     getPercentage() : number {
-        return Math.floor((100 * this.props.user.approves) / this.props.approves);
+        return Math.floor((100 * this.props.user.approves) / this.props.user.total);
     }
 
     render() {
@@ -29,7 +28,7 @@ class UserBar extends Component<IProps, {}> {
           <div className="UserBar">
             <img src={this.props.user.avatar} className='UserPicture' />
             <div className='FormDiv'>
-              <label className='FormLabel'>{this.props.user.name}</label>
+              <label className='FormLabel'>{this.props.user.name.toUpperCase()}</label>
             </div>
             <CircularProgressbar
               percentage={this.getPercentage()}
