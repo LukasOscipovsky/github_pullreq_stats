@@ -55,7 +55,7 @@ export default class LoginUtils {
       return `query {
         organization(login: "performgroup") {
           repository(name: "rp-rights-platform") {
-            pullRequests(first: ${number}, states: CLOSED) {
+            pullRequests(first: ${number}, after: "Y3Vyc29yOnYyOpHODKR0Uw==", states: MERGED) {
               nodes {
               author {
                 login

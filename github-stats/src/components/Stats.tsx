@@ -23,11 +23,12 @@ class Stats extends Component<IProps, IState> {
       accessToken: '',
       participants: []
     }
-    this.getData(10);
+
+    this.getData(30);
     }
 
   async getData(prNumber: number) {
-    axios.post(LoginUtils.getUrl(this.state.accessToken),{
+    var prs = axios.post(LoginUtils.getUrl(this.state.accessToken),{
       query: LoginUtils.getQuery2(prNumber),
       headers: LoginUtils.getHeaders()
     })
@@ -45,7 +46,9 @@ class Stats extends Component<IProps, IState> {
 
     prs.forEach(pr => {
       var pObj = JSON.parse(JSON.stringify(pr));
-      this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login);
+      if (pObj.author != null) {
+        this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login);
+      }
     });
 
     return users;
@@ -94,7 +97,9 @@ class Stats extends Component<IProps, IState> {
   updateUsersWithReviews(participants: Array<User>,reviews: Array<String>) {
     reviews.forEach(r => {
      var rObj = JSON.parse(JSON.stringify(r));
-     this.update(participants, rObj.author.login, rObj.comments.totalCount);
+     if (rObj.author != null) {
+      this.update(participants, rObj.author.login, rObj.comments.totalCount);
+      }
     });
     return participants;
   }

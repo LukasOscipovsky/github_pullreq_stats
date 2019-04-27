@@ -3,8 +3,10 @@ import CircularProgressbar from 'react-circular-progressbar';
 import FormLabel from '@material-ui/core/FormLabel';
 import CardMedia from '@material-ui/core/CardMedia';
 import Card from '@material-ui/core/Card';
-import { withStyles, Theme } from '@material-ui/core/styles';
 import User from '../data/User';
+import { faComments } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 interface IProps {
   user: User,
@@ -25,7 +27,7 @@ class UserBar extends Component<IProps, {}> {
 
     render() {
         return (
-          <div className="UserBar">
+          <div className='UserBar'>
             <img src={this.props.user.avatar} className='UserPicture' />
             <div className='FormDiv'>
               <label className='FormLabel'>{this.props.user.name.toUpperCase()}</label>
@@ -34,6 +36,10 @@ class UserBar extends Component<IProps, {}> {
               percentage={this.getPercentage()}
               text={`${this.getPercentage()}%`}
             />
+            <div className='CommentsDiv'>
+              <FontAwesomeIcon color='#f8fc00' size='2x' icon={faComments}/>
+              <label className='CommentsLabel'>{this.props.user.comments}</label>
+            </div>
           </div>
         );
       }

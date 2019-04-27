@@ -71,3 +71,31 @@
     border: 0;
     overflow: hidden;
 }
+
+.CommentsDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+}
+
+.CommentsLabel {
+    font-family: Trim,'Now-Bold',Oscine;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 19px;
+    color: #f8fc00;
+    letter-spacing: .0em;
+    word-spacing: initial;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    text-decoration: none;
+    text-rendering: auto;
+    border: 0;
+    overflow: hidden;
+    padding: 20px;
+    cursor: pointer;
+}
+
+
