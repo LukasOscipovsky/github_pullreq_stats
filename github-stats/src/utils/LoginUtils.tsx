@@ -11,51 +11,22 @@ export default class LoginUtils {
         })
     }
 
-    static getQuery(number: number) : string {
-        return `query {
-            organization(login: "performgroup") {
-              repository(name: "rp-rights-platform") {
-                pullRequest(number: ${number}) {
-                  author {
-                    login
-                  }
-                  reviews(first: 100, states: COMMENTED) {
-                    nodes {
-                      comments(first: 100) {
-                       totalCount 
-                      }
-                      author {
-                        login
-                      }
-                    }
-                  }
-                  reviewRequests(first: 100) {
-                    nodes {
-                      requestedReviewer {
-                        ... on User {
-                          login
-                          avatarUrl
-                        }
-                      }
-                    }
-                  }
-                  participants(first: 100) {
-                    nodes {
-                      login
-                      avatarUrl
-                    }
-                  }
-                }
-              }
-            }
-          }`
-    }
+    static getQuery(number: number, afterToken: string|null) : string {
+      var after: string = '';
+      if (afterToken != null) {
+        after = `after: "${afterToken}",`
+      }
 
-    static getQuery2(number: number) : string {
+      console.log(after);
+
       return `query {
         organization(login: "performgroup") {
           repository(name: "rp-rights-platform") {
-            pullRequests(first: ${number}, after: "Y3Vyc29yOnYyOpHODKR0Uw==", states: MERGED) {
+            pullRequests(first: ${number}, ${after} states: MERGED) {
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
               nodes {
               author {
                 login

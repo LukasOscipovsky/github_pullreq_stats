@@ -24,34 +24,43 @@ class Stats extends Component<IProps, IState> {
       participants: []
     }
 
-    this.getData(30);
+    this.getData(10);
     }
 
   async getData(prNumber: number) {
-    var prs = axios.post(LoginUtils.getUrl(this.state.accessToken),{
-      query: LoginUtils.getQuery2(prNumber),
-      headers: LoginUtils.getHeaders()
-    })
-    .then(response => {
-      var prs = response.data.data.organization.repository.pullRequests.nodes;
+    var hasNextPage: boolean = true;
+    var after: string|null = null;
+    var users: Array<User> = [];
+    
+    do {
+      await axios.post(LoginUtils.getUrl(this.state.accessToken),{
+        query: LoginUtils.getQuery(prNumber, after),
+        headers: LoginUtils.getHeaders()
+      })
+      .then(response => {
+        var prs = response.data.data.organization.repository.pullRequests;
+        
+        after = prs.pageInfo.endCursor;
+        hasNextPage = prs.pageInfo.hasNextPage;
+  
+        this.parseParent(users, prs.nodes);
+      })
+    } while (hasNextPage)
 
-      this.setState({
-        participants: this.parseParent(prs)
-      });
-    })
+    users.sort((u1 ,u2) => ((u1.approves/u1.total) < (u2.approves/u2.total)) ? 1 : -1)
+
+    this.setState({
+      participants: users
+    });
   }
 
-  parseParent(prs: Array<String>) : Array<User> {
-    var users: Array<User> = [];
-
+  parseParent(users: Array<User> ,prs: Array<String>) {
     prs.forEach(pr => {
       var pObj = JSON.parse(JSON.stringify(pr));
       if (pObj.author != null) {
         this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login);
       }
     });
-
-    return users;
   }
 
   parse(users: Array<User>, participants: Array<String>, reviewRequests: Array<String>, reviews: Array<String>, author: string) {
@@ -77,17 +86,11 @@ class Stats extends Component<IProps, IState> {
       if (user == undefined) {
         var newUser = new User(pObj.login, pObj.avatarUrl);
 
-        if (author !== pObj.login) {
-          newUser.approves++;
-          newUser.total++;
-        }
+        this.increaseApproves(author, pObj.login, newUser);
 
         users.push(newUser);
       } else {
-        if (author !== pObj.login) {
-          user.approves++;
-          user.total++;
-        }
+        this.increaseApproves(author, pObj.login, user);
       }
     })
 
@@ -102,6 +105,13 @@ class Stats extends Component<IProps, IState> {
       }
     });
     return participants;
+  }
+
+  increaseApproves(author: string, login: string, user: User) {
+    if (author !== login) {
+      user.approves++;
+      user.total++;
+    }
   }
 
   update(users : Array<User>, login: string, comments: number) {
@@ -123,8 +133,13 @@ class Stats extends Component<IProps, IState> {
 
   render() {
     return (
-      <div className='Stats'>
-        {this.compsFromList()}
+      <div className='MainStatsDiv'>
+        <div className='ConfigDiv'>
+          <label className='StatsName'>asd</label>
+        </div>
+        <div className='StatsDiv'>
+          {this.compsFromList()}
+        </div>
       </div>
     );
   }

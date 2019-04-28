@@ -28,7 +28,9 @@ class UserBar extends Component<IProps, {}> {
     render() {
         return (
           <div className='UserBar'>
-            <img src={this.props.user.avatar} className='UserPicture' />
+            <div className='UserPictureDiv'>
+              <img src={this.props.user.avatar} className='UserPicture' />
+            </div>
             <div className='FormDiv'>
               <label className='FormLabel'>{this.props.user.name.toUpperCase()}</label>
             </div>
@@ -37,7 +39,7 @@ class UserBar extends Component<IProps, {}> {
               text={`${this.getPercentage()}%`}
             />
             <div className='CommentsDiv'>
-              <FontAwesomeIcon color='#f8fc00' size='2x' icon={faComments}/>
+              <FontAwesomeIcon color='#242d34' size='2x' icon={faComments}/>
               <label className='CommentsLabel'>{this.props.user.comments}</label>
             </div>
           </div>

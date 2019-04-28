@@ -5,12 +5,17 @@
     justify-content: center;
  } 
 
-.UserPicture {
+.UserPictureDiv {
   width: 6%;
-  margin: 15px;
-  border: 2px solid #343b3f;
-  border-radius: 5px;
+  padding: 20px;
 }
+
+.UserPicture {
+    width: 50px;
+    margin: 15px;
+    border: 2px solid #343b3f;
+    border-radius: 5px;
+  }
 
 .FormLabel {
   font-family: Trim,'Now-Bold',Oscine;
@@ -27,7 +32,8 @@
   text-rendering: auto;
   border: 0;
   overflow: hidden;
-  padding: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   cursor: pointer;
   display: block;
 }
@@ -35,16 +41,16 @@
 .FormDiv {
   background: #f8fc00;
   margin: 20px;
-  width: 500px;
+  width: 400px;
   align-items: center;
   text-align: center;
   border-radius: 2px;
 }
 
 .CircularProgressbar {
-    width: 8%;
+    width: 7%;
     margin: 15px;
-    padding-left: 10px;
+    padding-right: 15px;
     border-radius: 5px;
 }
 
@@ -76,7 +82,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 130px;
+    width: 10%;
+    padding-left: 1px;
+    background: #f8fc00;
+    border: 2px solid #343b3f;
+    border-radius: 5px;
 }
 
 .CommentsLabel {
@@ -84,7 +94,7 @@
     font-style: normal;
     font-weight: 700;
     font-size: 19px;
-    color: #f8fc00;
+    color: #242d34;
     letter-spacing: .0em;
     word-spacing: initial;
     text-transform: none;
@@ -94,7 +104,7 @@
     text-rendering: auto;
     border: 0;
     overflow: hidden;
-    padding: 20px;
+    padding: 10px;
     cursor: pointer;
 }
 
