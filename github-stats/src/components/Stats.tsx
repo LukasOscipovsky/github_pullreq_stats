@@ -2,29 +2,25 @@ import React, { Component, MouseEvent } from 'react';
 import UserBar from './UserBar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import './Stats.css';
 import LoginUtils from '../utils/LoginUtils';
 import axios from 'axios';
 import User from '../data/User';
-
-interface IProps {
-  classes: any;
-}
+import SideBar from './SideBar';
 
 interface IState {
   accessToken: string,
   participants: Array<User>
 }
 
-class Stats extends Component<IProps, IState> { 
-  constructor(props: IProps) {
+class Stats extends Component<{}, IState> { 
+  constructor(props: any) {
     super(props);
     this.state = {
       accessToken: '',
       participants: []
     }
 
-    this.getData(10);
+    this.getData(30);
     }
 
   async getData(prNumber: number) {
@@ -134,9 +130,7 @@ class Stats extends Component<IProps, IState> {
   render() {
     return (
       <div className='MainStatsDiv'>
-        <div className='ConfigDiv'>
-          <label className='StatsName'>asd</label>
-        </div>
+        <SideBar/>
         <div className='StatsDiv'>
           {this.compsFromList()}
         </div>

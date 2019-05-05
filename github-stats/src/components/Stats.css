@@ -1,12 +1,8 @@
 @import './UserBar.css';
+@import './SideBar.css';
 
 .MainStatsDiv {
     display: flex;
-}
-
-.ConfigDiv {
-    width: 20%;
-    float:left;
 }
 
 .StatsDiv {
