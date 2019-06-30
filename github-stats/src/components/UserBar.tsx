@@ -38,9 +38,12 @@ class UserBar extends Component<IProps, {}> {
               percentage={this.getPercentage()}
               text={`${this.getPercentage()}%`}
             />
-            <div className='CommentsDiv'>
+            <div className='DataDiv'>
+              <label className='DataLabel'>{this.props.user.approves} / {this.props.user.total}</label>
+            </div>
+            <div className='DataDiv'>
               <FontAwesomeIcon color='#242d34' size='2x' icon={faComments}/>
-              <label className='CommentsLabel'>{this.props.user.comments}</label>
+              <label className='DataLabel'>{this.props.user.comments}</label>
             </div>
           </div>
         );

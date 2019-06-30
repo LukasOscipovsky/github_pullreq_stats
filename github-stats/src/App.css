@@ -18,3 +18,11 @@
     font-weight: 400;
     src: url('./fonts/Now-Bold.otf');
  }
+
+
+ @font-face {
+    font-family: 'DAZN-Bold';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/DAZNTrim-Bold.otf');
+  }

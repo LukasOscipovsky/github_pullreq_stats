@@ -4,7 +4,7 @@ body {
 }
 
 #SideBar {
-  font-family: Trim,'Now-Bold',Oscine;
+  font-family: Trim,'DAZN-Bold',Oscine;
 
   /* Give app full page to work with */
   height: 100vh;
@@ -13,7 +13,7 @@ body {
 /* Individual item */
 .bm-item {
   display: inline-block;
-  font-family: Trim,'Now-Bold',Oscine;
+  font-family: Trim,'DAZN-Bold',Oscine;
 
   /* Our sidebar item styling */
   text-decoration: none;
