@@ -7,16 +7,22 @@ import axios from 'axios';
 import User from '../data/User';
 import SideBar from './SideBar';
 
-class Stats extends Component<{}, {}> { 
+interface StatsState {
+  participants: Array<User>
+}
+
+class Stats extends Component<{}, StatsState> { 
   constructor(props: any) {
     super(props);
-    this.state = {
-      accessToken: '6cae8815f9c348934e7de6c784e57441bb4460c2',
-      participants: []
+      this.state = {
+        participants: []
+      }
     }
 
-    this.getData(30);
-    }
+  getData(data: Array<User>) {
+    console.log(data);
+    this.setState({participants: data})
+  }
 
   compsFromList() {
     return this.state.participants
@@ -28,7 +34,7 @@ class Stats extends Component<{}, {}> {
   render() {
     return (
       <div className='MainStatsDiv'>
-        <SideBar/>
+        <SideBar triggerParentUpdate={(data) => this.getData(data)} />
         <div className='StatsDiv'>
           {this.compsFromList()}
         </div>

@@ -11,16 +11,17 @@ interface SideState {
   participants: Array<User>
 }
 
-class SideBar extends Component<{}, SideState> { 
+interface SideProps {
+  triggerParentUpdate(participants: Array<User>): void
+}
+
+class SideBar extends Component<SideProps, SideState> { 
     constructor(props: any) {
       super(props);
     }
 
-    handleSave() {
-      this.getData(30);
-    }
-
-    async getData(prNumber: number) {
+    async getData() {
+      var prNumber: number = 30;
       var hasNextPage: boolean = true;
       var after: string|null = null;
       var users: Array<User> = [];
@@ -42,9 +43,11 @@ class SideBar extends Component<{}, SideState> {
   
       users.sort((u1 ,u2) => ((u1.approves/u1.total) < (u2.approves/u2.total)) ? 1 : -1)
   
-      this.setState({
+      /*this.setState({
         participants: users
-      });
+      });*/
+
+      this.props.triggerParentUpdate(users);
     }
   
     parseParent(users: Array<User> ,prs: Array<String>) {
@@ -122,7 +125,7 @@ class SideBar extends Component<{}, SideState> {
             <TextField
                 required
                 label="AccessToken" 
-                /* onChange={event => this.setState({title: event.currentTarget.value})} */
+                onChange={event => this.setState({accessToken: event.currentTarget.value})}
                 variant="filled"
                 style={{fontFamily: 'Trim,DAZN-Bold,Oscine', outlineColor: 'black', width: 200, background: 'white'}}
             /> 
@@ -135,7 +138,7 @@ class SideBar extends Component<{}, SideState> {
             /> 
             <Button
             style={{backgroundColor: '#242d34', marginRight: 20, marginTop: 20, color: '#f8fc00', fontFamily: 'Trim,DAZN-Bold,Oscine'}}
-            onClick={this.handleSave}>
+            onClick={() => this.getData()}>
             Save
             </Button>
           </Menu>
