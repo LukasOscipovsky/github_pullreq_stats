@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { slide as Menu } from "react-burger-menu";
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import LoginUtils from '../utils/LoginUtils';
 import User from '../data/User';
@@ -8,19 +14,44 @@ import axios from 'axios';
 
 interface SideState {
   accessToken: string,
-  participants: Array<User>
+  repository: string;
+  showAccessToken: boolean;
 }
 
 interface SideProps {
   triggerParentUpdate(participants: Array<User>): void
+  triggerParentLoading(loading: boolean): void
 }
 
 class SideBar extends Component<SideProps, SideState> { 
+  
     constructor(props: any) {
       super(props);
+    
+      this.setState({
+        accessToken: '',
+        repository: '',
+        showAccessToken: true
+      })
+    }
+
+    handleClickShowAccessToken = () => {
+      this.setState({
+        showAccessToken: !this.state.showAccessToken
+      })
     }
 
     async getData() {
+      this.props.triggerParentLoading(true);
+
+      /*if (this.state.accessToken === null || this.state.accessToken === '') {
+        alert("Access Token has not been provided!")
+      }
+
+      if (this.state.repository === null || this.state.repository === '') {
+        alert("Repository has not been provided!")
+      }*/
+
       var prNumber: number = 30;
       var hasNextPage: boolean = true;
       var after: string|null = null;
@@ -28,7 +59,7 @@ class SideBar extends Component<SideProps, SideState> {
       
       do {
         await axios.post(LoginUtils.getUrl(this.state.accessToken),{
-          query: LoginUtils.getQuery(prNumber, after),
+          query: LoginUtils.getQuery(prNumber, this.state.repository, after),
           headers: LoginUtils.getHeaders()
         })
         .then(response => {
@@ -42,10 +73,6 @@ class SideBar extends Component<SideProps, SideState> {
       } while (hasNextPage)
   
       users.sort((u1 ,u2) => ((u1.approves/u1.total) < (u2.approves/u2.total)) ? 1 : -1)
-  
-      /*this.setState({
-        participants: users
-      });*/
 
       this.props.triggerParentUpdate(users);
     }
@@ -62,6 +89,11 @@ class SideBar extends Component<SideProps, SideState> {
     parse(users: Array<User>, participants: Array<String>, reviewRequests: Array<String>, reviews: Array<String>, author: string) {
       reviewRequests.forEach(rqst => {
         var rObj = JSON.parse(JSON.stringify(rqst));
+
+        if (rObj.requestedReviewer === null) {
+          return;
+        }
+
         var user = users.find(user => user.name === rObj.requestedReviewer.login);
   
         if (user == undefined) {
@@ -93,7 +125,7 @@ class SideBar extends Component<SideProps, SideState> {
       this.updateUsersWithReviews(users, reviews)
     }
   
-    updateUsersWithReviews(participants: Array<User>,reviews: Array<String>) {
+    updateUsersWithReviews(participants: Array<User>, reviews: Array<String>) {
       reviews.forEach(r => {
        var rObj = JSON.parse(JSON.stringify(r));
        if (rObj.author != null) {
@@ -128,14 +160,27 @@ class SideBar extends Component<SideProps, SideState> {
                 onChange={event => this.setState({accessToken: event.currentTarget.value})}
                 variant="filled"
                 style={{fontFamily: 'Trim,DAZN-Bold,Oscine', outlineColor: 'black', width: 200, background: 'white'}}
+                type={(() => this.state.showAccessToken) ? 'text' : 'password'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={this.handleClickShowAccessToken}
+                      >
+                        {(() => this.state.showAccessToken) ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
             /> 
             <TextField
                 required
-                label="Repositories" 
-                /* onChange={event => this.setState({title: event.currentTarget.value})} */
+                label="Repository" 
+                onChange={event => this.setState({repository: event.currentTarget.value})}
                 variant="filled"
                 style={{fontFamily: 'Trim,DAZN-Bold,Oscine', outlineColor: 'black', width: 200, background: 'white', marginTop: 20}}
-            /> 
+            />
             <Button
             style={{backgroundColor: '#242d34', marginRight: 20, marginTop: 20, color: '#f8fc00', fontFamily: 'Trim,DAZN-Bold,Oscine'}}
             onClick={() => this.getData()}>

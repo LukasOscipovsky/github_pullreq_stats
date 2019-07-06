@@ -11,7 +11,7 @@ export default class LoginUtils {
         })
     }
 
-    static getQuery(number: number, afterToken: string|null) : string {
+    static getQuery(number: number, repository: string, afterToken: string|null) : string {
       var after: string = '';
       if (afterToken != null) {
         after = `after: "${afterToken}",`
@@ -21,7 +21,7 @@ export default class LoginUtils {
 
       return `query {
         organization(login: "performgroup") {
-          repository(name: "rp-rights-platform") {
+          repository(name: "${repository}") {
             pullRequests(first: ${number}, ${after} states: MERGED) {
               pageInfo {
                 hasNextPage

@@ -18,3 +18,21 @@
 .StatsName {
     color: #f8fc00;
 }
+
+.Loading {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, 0);
+}
+
+.LoadingLabel {
+    font-family: Trim,'DAZN-Bold',Oscine;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #f8fc00;
+    margin-top: 20px;
+}

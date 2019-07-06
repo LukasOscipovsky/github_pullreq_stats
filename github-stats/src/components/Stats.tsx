@@ -6,8 +6,10 @@ import LoginUtils from '../utils/LoginUtils';
 import axios from 'axios';
 import User from '../data/User';
 import SideBar from './SideBar';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface StatsState {
+  loading: boolean;
   participants: Array<User>
 }
 
@@ -15,13 +17,16 @@ class Stats extends Component<{}, StatsState> {
   constructor(props: any) {
     super(props);
       this.state = {
+        loading: false,
         participants: []
       }
     }
 
   getData(data: Array<User>) {
-    console.log(data);
-    this.setState({participants: data})
+    this.setState({
+      loading: false,
+      participants: data
+    })
   }
 
   compsFromList() {
@@ -32,12 +37,31 @@ class Stats extends Component<{}, StatsState> {
   }
 
   render() {
+    const loading = this.state.loading;
+
+    let divRender;
+
+    if (loading) {
+      divRender = <div className="Loading">
+      <CircularProgress
+        size={100}
+        style={{color: '#f8fc00'}}
+      />
+      <label className="LoadingLabel">LOADING</label>
+    </div>;
+    } else {
+      divRender = <div className='StatsDiv'>
+      {this.compsFromList()}
+      </div>
+    }
+
     return (
       <div className='MainStatsDiv'>
-        <SideBar triggerParentUpdate={(data) => this.getData(data)} />
-        <div className='StatsDiv'>
-          {this.compsFromList()}
-        </div>
+        <SideBar 
+        triggerParentUpdate={(data) => this.getData(data)} 
+        triggerParentLoading={(isLoadingEnabled) => this.setState({loading: isLoadingEnabled})}
+        />
+        {divRender}
       </div>
     );
   }

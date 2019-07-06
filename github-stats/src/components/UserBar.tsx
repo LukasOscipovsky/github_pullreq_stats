@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import User from '../data/User';
 import { faComments } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 interface IProps {
