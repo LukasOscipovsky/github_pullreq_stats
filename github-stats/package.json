@@ -44,6 +44,7 @@
   "devDependencies": {
     "@types/react-tap-event-plugin": "0.0.30",
     "prettier": "^1.16.4",
+    "regenerator-runtime": "^0.13.2",
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^3.6.0"

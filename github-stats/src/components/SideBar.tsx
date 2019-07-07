@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { slide as Menu } from "react-burger-menu";
 import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -9,13 +10,16 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import LoginUtils from '../utils/LoginUtils';
+import DateUtils from '../utils/DateUtils';
+import ParseUtils from '../utils/ParseUtils';
 import User from '../data/User';
 import axios from 'axios';
 
 interface SideState {
-  accessToken: string,
+  accessToken: string;
   repository: string;
   showAccessToken: boolean;
+  timeToRender: string;
 }
 
 interface SideProps {
@@ -23,15 +27,15 @@ interface SideProps {
   triggerParentLoading(loading: boolean): void
 }
 
-class SideBar extends Component<SideProps, SideState> { 
-  
-    constructor(props: any) {
+class SideBar extends Component<SideProps, SideState> {   
+    constructor(props: SideProps) {
       super(props);
     
       this.setState({
         accessToken: '',
         repository: '',
-        showAccessToken: true
+        showAccessToken: true,
+        timeToRender: ''
       })
     }
 
@@ -41,16 +45,43 @@ class SideBar extends Component<SideProps, SideState> {
       })
     }
 
-    async getData() {
-      this.props.triggerParentLoading(true);
-
-      /*if (this.state.accessToken === null || this.state.accessToken === '') {
-        alert("Access Token has not been provided!")
+    getDataInInterval() {
+      if (this.validateState()) {
+        return;
       }
 
-      if (this.state.repository === null || this.state.repository === '') {
+      this.getData();
+      setInterval(() => {
+        this.getData();  
+      }, DateUtils.getTimeInMillis(this.state.timeToRender))
+    }
+
+    validateState() : boolean {
+      if (this.state === null) {
+        alert("Required fields have not been provided!")
+        return false;
+      }
+
+      if (this.state.accessToken === undefined || this.state.accessToken === '') {
+        alert("AccessToken has not been provided!")
+        return false;
+      }
+
+      if (this.state.repository === undefined || this.state.repository === '') {
         alert("Repository has not been provided!")
-      }*/
+        return false;
+      }
+
+      if (this.state.timeToRender === undefined || this.state.timeToRender === '') {
+        alert("Refresh interval has not been provided!")
+        return false;
+      }
+
+      return true;
+    } 
+
+    async getData() {
+      this.props.triggerParentLoading(true);
 
       var prNumber: number = 30;
       var hasNextPage: boolean = true;
@@ -68,7 +99,7 @@ class SideBar extends Component<SideProps, SideState> {
           after = prs.pageInfo.endCursor;
           hasNextPage = prs.pageInfo.hasNextPage;
     
-          this.parseParent(users, prs.nodes);
+          ParseUtils.parseParent(users, prs.nodes);
         })
       } while (hasNextPage)
   
@@ -76,90 +107,18 @@ class SideBar extends Component<SideProps, SideState> {
 
       this.props.triggerParentUpdate(users);
     }
-  
-    parseParent(users: Array<User> ,prs: Array<String>) {
-      prs.forEach(pr => {
-        var pObj = JSON.parse(JSON.stringify(pr));
-        if (pObj.author != null) {
-          this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login);
-        }
-      });
-    }
-  
-    parse(users: Array<User>, participants: Array<String>, reviewRequests: Array<String>, reviews: Array<String>, author: string) {
-      reviewRequests.forEach(rqst => {
-        var rObj = JSON.parse(JSON.stringify(rqst));
-
-        if (rObj.requestedReviewer === null) {
-          return;
-        }
-
-        var user = users.find(user => user.name === rObj.requestedReviewer.login);
-  
-        if (user == undefined) {
-          var newUser = new User(rObj.requestedReviewer.login, rObj.requestedReviewer.avatarUrl);
-  
-          newUser.total++;
-  
-          users.push(newUser);
-        } else {
-          user.total++;
-        }
-      });
-      
-      participants.forEach(p => {
-        var pObj = JSON.parse(JSON.stringify(p));
-        var user = users.find(user => user.name === pObj.login);
-  
-        if (user == undefined) {
-          var newUser = new User(pObj.login, pObj.avatarUrl);
-  
-          this.increaseApproves(author, pObj.login, newUser);
-  
-          users.push(newUser);
-        } else {
-          this.increaseApproves(author, pObj.login, user);
-        }
-      })
-  
-      this.updateUsersWithReviews(users, reviews)
-    }
-  
-    updateUsersWithReviews(participants: Array<User>, reviews: Array<String>) {
-      reviews.forEach(r => {
-       var rObj = JSON.parse(JSON.stringify(r));
-       if (rObj.author != null) {
-        this.update(participants, rObj.author.login, rObj.comments.totalCount);
-        }
-      });
-      return participants;
-    }
-  
-    increaseApproves(author: string, login: string, user: User) {
-      if (author !== login) {
-        user.approves++;
-        user.total++;
-      }
-    }
-  
-    update(users : Array<User>, login: string, comments: number) {
-      users.forEach(user => {
-        if (user.name == login) {
-          user.comments = user.comments + comments;
-        }
-      })
-    }
 
     render() {
         return (
           <Menu className="SideBar">
             <label className="SideLabel">SETTINGS</label>
+            <div className="Inputs">
             <TextField
                 required
                 label="AccessToken" 
                 onChange={event => this.setState({accessToken: event.currentTarget.value})}
                 variant="filled"
-                style={{fontFamily: 'Trim,DAZN-Bold,Oscine', outlineColor: 'black', width: 200, background: 'white'}}
+                style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white'}}
                 type={(() => this.state.showAccessToken) ? 'text' : 'password'}
                 InputProps={{
                   endAdornment: (
@@ -179,13 +138,23 @@ class SideBar extends Component<SideProps, SideState> {
                 label="Repository" 
                 onChange={event => this.setState({repository: event.currentTarget.value})}
                 variant="filled"
-                style={{fontFamily: 'Trim,DAZN-Bold,Oscine', outlineColor: 'black', width: 200, background: 'white', marginTop: 20}}
+                style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20}}
             />
+            <Tooltip title="Input in Hours ('H', 'h', '') or Days('D', 'd')">
+              <TextField
+                  required
+                  label="Refresh Interval" 
+                  onChange={event => this.setState({timeToRender: event.currentTarget.value})}
+                  variant="filled"
+                  style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20}}
+              />
+            </Tooltip>
             <Button
-            style={{backgroundColor: '#242d34', marginRight: 20, marginTop: 20, color: '#f8fc00', fontFamily: 'Trim,DAZN-Bold,Oscine'}}
-            onClick={() => this.getData()}>
-            Save
+              style={{backgroundColor: '#242d34', marginRight: 20, marginTop: 20, color: '#f8fc00', fontFamily: 'Trim,DAZN-Bold,Oscine'}}
+              onClick={() => this.getDataInInterval()}>
+              Save
             </Button>
+            </div>
           </Menu>
         );
       }

@@ -18,7 +18,7 @@ class Stats extends Component<{}, StatsState> {
     super(props);
       this.state = {
         loading: false,
-        participants: []
+        participants: [],
       }
     }
 
