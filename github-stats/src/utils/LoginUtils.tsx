@@ -11,18 +11,22 @@ export default class LoginUtils {
         })
     }
 
-    static getQuery(number: number, repository: string, afterToken: string|null) : string {
+    static getQuery(number: number, repository: string, afterToken: string|null, branch: string|null) : string {
       var after: string = '';
+      var branchString: string = '';
+
       if (afterToken != null) {
         after = `after: "${afterToken}",`
       }
 
-      console.log(after);
+      if (branch != null) {
+         branchString = `baseRefName: "${branch}",`
+      }
 
       return `query {
         organization(login: "performgroup") {
           repository(name: "${repository}") {
-            pullRequests(first: ${number}, ${after} states: MERGED) {
+            pullRequests(first: ${number}, ${after} ${branchString} states: MERGED) {
               pageInfo {
                 hasNextPage
                 endCursor

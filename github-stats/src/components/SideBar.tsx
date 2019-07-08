@@ -3,8 +3,6 @@ import { slide as Menu } from "react-burger-menu";
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -20,6 +18,7 @@ interface SideState {
   repository: string;
   showAccessToken: boolean;
   timeToRender: string;
+  branch: string;
 }
 
 interface SideProps {
@@ -28,25 +27,25 @@ interface SideProps {
 }
 
 class SideBar extends Component<SideProps, SideState> {   
-    constructor(props: SideProps) {
-      super(props);
-    
+    componentDidMount() {
       this.setState({
         accessToken: '',
         repository: '',
         showAccessToken: true,
-        timeToRender: ''
+        timeToRender: '',
+        branch: ''
       })
     }
 
     handleClickShowAccessToken = () => {
+      console.log(this.state.timeToRender)
       this.setState({
         showAccessToken: !this.state.showAccessToken
       })
     }
 
     getDataInInterval() {
-      if (this.validateState()) {
+      if (!this.validateState()) {
         return;
       }
 
@@ -57,11 +56,6 @@ class SideBar extends Component<SideProps, SideState> {
     }
 
     validateState() : boolean {
-      if (this.state === null) {
-        alert("Required fields have not been provided!")
-        return false;
-      }
-
       if (this.state.accessToken === undefined || this.state.accessToken === '') {
         alert("AccessToken has not been provided!")
         return false;
@@ -90,7 +84,7 @@ class SideBar extends Component<SideProps, SideState> {
       
       do {
         await axios.post(LoginUtils.getUrl(this.state.accessToken),{
-          query: LoginUtils.getQuery(prNumber, this.state.repository, after),
+          query: LoginUtils.getQuery(prNumber, this.state.repository, after, this.state.branch),
           headers: LoginUtils.getHeaders()
         })
         .then(response => {
@@ -103,8 +97,8 @@ class SideBar extends Component<SideProps, SideState> {
         })
       } while (hasNextPage)
   
-      users.sort((u1 ,u2) => ((u1.approves/u1.total) < (u2.approves/u2.total)) ? 1 : -1)
-
+      users = users.filter(u => u.total > 0).sort((u1 ,u2) => ((u1.approves/u1.total) < (u2.approves/u2.total)) ? 1 : -1)
+      
       this.props.triggerParentUpdate(users);
     }
 
@@ -140,10 +134,16 @@ class SideBar extends Component<SideProps, SideState> {
                 variant="filled"
                 style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20}}
             />
+            <TextField
+                label="Branch"
+                onChange={event => this.setState({branch: event.currentTarget.value})}
+                variant="filled"
+                style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20}}
+            />
             <Tooltip title="Input in Hours ('H', 'h', '') or Days('D', 'd')">
               <TextField
                   required
-                  label="Refresh Interval" 
+                  label="Refresh Interval"
                   onChange={event => this.setState({timeToRender: event.currentTarget.value})}
                   variant="filled"
                   style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20}}

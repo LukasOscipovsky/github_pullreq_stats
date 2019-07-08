@@ -1,28 +1,26 @@
-import React, { Component, MouseEvent } from 'react';
+import React, { Component } from 'react';
 import UserBar from './UserBar';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import LoginUtils from '../utils/LoginUtils';
-import axios from 'axios';
 import User from '../data/User';
 import SideBar from './SideBar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface StatsState {
   loading: boolean;
-  participants: Array<User>
+  participants: Array<User>;
 }
 
-class Stats extends Component<{}, StatsState> { 
+class Stats extends Component<{}, StatsState> {
   constructor(props: any) {
     super(props);
-      this.state = {
-        loading: false,
-        participants: [],
-      }
+    this.state = {
+      loading: false,
+      participants: [],
     }
+  }
 
   getData(data: Array<User>) {
+    console.log(data)
+    
     this.setState({
       loading: false,
       participants: data
@@ -31,9 +29,9 @@ class Stats extends Component<{}, StatsState> {
 
   compsFromList() {
     return this.state.participants
-    .map((p) => {
-      return (<UserBar user={p}/>)
-    });
+      .map((p) => {
+        return (<UserBar user={p} />)
+      });
   }
 
   render() {
@@ -43,23 +41,23 @@ class Stats extends Component<{}, StatsState> {
 
     if (loading) {
       divRender = <div className="Loading">
-      <CircularProgress
-        size={100}
-        style={{color: '#f8fc00'}}
-      />
-      <label className="LoadingLabel">LOADING</label>
-    </div>;
+        <CircularProgress
+          size={100}
+          style={{ color: '#f8fc00' }}
+        />
+        <label className="LoadingLabel">LOADING</label>
+      </div>;
     } else {
       divRender = <div className='StatsDiv'>
-      {this.compsFromList()}
+        {this.compsFromList()}
       </div>
     }
 
     return (
       <div className='MainStatsDiv'>
-        <SideBar 
-        triggerParentUpdate={(data) => this.getData(data)} 
-        triggerParentLoading={(isLoadingEnabled) => this.setState({loading: isLoadingEnabled})}
+        <SideBar
+          triggerParentUpdate={(data) => this.getData(data)}
+          triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
         {divRender}
       </div>
