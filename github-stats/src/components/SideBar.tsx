@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 import { slide as Menu } from "react-burger-menu";
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -26,22 +26,28 @@ interface SideProps {
   triggerParentLoading(loading: boolean): void
 }
 
-class SideBar extends Component<SideProps, SideState> {   
-    componentDidMount() {
+class SideBar extends Component<SideProps, SideState> { 
+    componentWillMount() {
+      const repo = localStorage.getItem('repository');
+
       this.setState({
         accessToken: '',
-        repository: '',
-        showAccessToken: true,
+        repository: repo === null ? '' : repo,
+        showAccessToken: false,
         timeToRender: '',
         branch: ''
       })
     }
 
     handleClickShowAccessToken = () => {
-      console.log(this.state.timeToRender)
       this.setState({
         showAccessToken: !this.state.showAccessToken
       })
+    }
+
+    handleOnChange(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
+      this.setState({repository: event.currentTarget.value})
+      localStorage.setItem('repository', event.currentTarget.value)
     }
 
     getDataInInterval() {
@@ -113,7 +119,7 @@ class SideBar extends Component<SideProps, SideState> {
                 onChange={event => this.setState({accessToken: event.currentTarget.value})}
                 variant="filled"
                 style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white'}}
-                type={(() => this.state.showAccessToken) ? 'text' : 'password'}
+                type={(this.state.showAccessToken ? 'text' : 'password')}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -121,7 +127,7 @@ class SideBar extends Component<SideProps, SideState> {
                         aria-label="Toggle password visibility"
                         onClick={this.handleClickShowAccessToken}
                       >
-                        {(() => this.state.showAccessToken) ? <VisibilityOff /> : <Visibility />}
+                        {(this.state.showAccessToken ? <Visibility /> : <VisibilityOff />)}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -130,7 +136,8 @@ class SideBar extends Component<SideProps, SideState> {
             <TextField
                 required
                 label="Repository" 
-                onChange={event => this.setState({repository: event.currentTarget.value})}
+                onChange={event => this.handleOnChange(event)}
+                value={this.state.repository}
                 variant="filled"
                 style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20}}
             />
