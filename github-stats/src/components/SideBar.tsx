@@ -28,14 +28,17 @@ interface SideProps {
 
 class SideBar extends Component<SideProps, SideState> { 
     componentWillMount() {
+      const ac = localStorage.getItem('accessToken');
       const repo = localStorage.getItem('repository');
+      const ttr = localStorage.getItem('timeToRender');
+      const br = localStorage.getItem('branch');
 
       this.setState({
-        accessToken: '',
+        accessToken: ac === null ? '' : ac,
         repository: repo === null ? '' : repo,
         showAccessToken: false,
-        timeToRender: '',
-        branch: ''
+        timeToRender: ttr === null ? '' : ttr,
+        branch: br === null ? '' : br
       })
     }
 
@@ -47,13 +50,17 @@ class SideBar extends Component<SideProps, SideState> {
 
     handleOnChange(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
       this.setState({repository: event.currentTarget.value})
-      localStorage.setItem('repository', event.currentTarget.value)
     }
 
     getDataInInterval() {
       if (!this.validateState()) {
         return;
       }
+
+      localStorage.setItem('accessToken', this.state.accessToken);
+      localStorage.setItem('repository', this.state.repository);
+      localStorage.setItem('timeToRender', this.state.timeToRender);
+      localStorage.setItem('branch', this.state.branch);
 
       this.getData();
       setInterval(() => {
@@ -118,6 +125,7 @@ class SideBar extends Component<SideProps, SideState> {
                 label="AccessToken" 
                 onChange={event => this.setState({accessToken: event.currentTarget.value})}
                 variant="filled"
+                value={this.state.accessToken}
                 style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white'}}
                 type={(this.state.showAccessToken ? 'text' : 'password')}
                 InputProps={{
@@ -145,6 +153,7 @@ class SideBar extends Component<SideProps, SideState> {
                 label="Branch"
                 onChange={event => this.setState({branch: event.currentTarget.value})}
                 variant="filled"
+                value={this.state.branch}
                 style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20}}
             />
             <Tooltip title="Input in Hours ('H', 'h', '') or Days('D', 'd')">
@@ -153,6 +162,7 @@ class SideBar extends Component<SideProps, SideState> {
                   label="Refresh Interval"
                   onChange={event => this.setState({timeToRender: event.currentTarget.value})}
                   variant="filled"
+                  value={this.state.timeToRender}
                   style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20}}
               />
             </Tooltip>
