@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 interface StatsState {
   loading: boolean;
   participants: Array<User>;
+  repository: string;
 }
 
 class Stats extends Component<{}, StatsState> {
@@ -15,15 +16,15 @@ class Stats extends Component<{}, StatsState> {
     this.state = {
       loading: false,
       participants: [],
+      repository: ''
     }
   }
 
-  getData(data: Array<User>) {
-    console.log(data)
-    
+  getData(data: Array<User>, repository: string) {
     this.setState({
       loading: false,
-      participants: data
+      participants: data,
+      repository: repository
     })
   }
 
@@ -56,9 +57,12 @@ class Stats extends Component<{}, StatsState> {
     return (
       <div className='MainStatsDiv'>
         <SideBar
-          triggerParentUpdate={(data) => this.getData(data)}
+          triggerParentUpdate={(data, repository) => this.getData(data, repository)}
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
+        <div className="Repo">
+          <label className ="RepoLabel">{this.state.repository}</label>
+        </div>
         {divRender}
       </div>
     );

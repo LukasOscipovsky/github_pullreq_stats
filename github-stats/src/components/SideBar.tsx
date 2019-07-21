@@ -22,7 +22,7 @@ interface SideState {
 }
 
 interface SideProps {
-  triggerParentUpdate(participants: Array<User>): void
+  triggerParentUpdate(participants: Array<User>, repository: string): void
   triggerParentLoading(loading: boolean): void
 }
 
@@ -112,7 +112,7 @@ class SideBar extends Component<SideProps, SideState> {
   
       users = users.filter(u => u.total > 0).sort((u1 ,u2) => ((u1.approves/u1.total) < (u2.approves/u2.total)) ? 1 : -1)
       
-      this.props.triggerParentUpdate(users);
+      this.props.triggerParentUpdate(users, this.state.repository);
     }
 
     render() {

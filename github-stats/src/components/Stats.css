@@ -36,3 +36,23 @@
     color: #f8fc00;
     margin-top: 20px;
 }
+
+.Repo {
+    width: 100%;
+    position: absolute;
+    left: 47%;
+    top: 45%;
+    transform: rotate(90deg);
+    background: #f8fc00;
+}
+
+.RepoLabel {
+    font-family: Trim,'DAZN-Bold',Oscine;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 72px;
+    color: #242d34;
+    margin-top: 20px;
+    height: 40vh;
+    text-transform: capitalize;
+}
