@@ -32,39 +32,40 @@ export default class LoginUtils {
                 endCursor
               }
               nodes {
-              author {
-                login
-              }
-              reviews(first: 100, states: COMMENTED) {
-                nodes {
-                  comments(first: 100) {
-                   totalCount 
-                  }
-                  author {
-                    login
-                  }
+                closedAt
+                author {
+                  login
                 }
-              }
-              reviewRequests(first: 100) {
-                nodes {
-                  requestedReviewer {
-                    ... on User {
+                reviews(first: 100, states: COMMENTED) {
+                  nodes {
+                    comments(first: 100) {
+                    totalCount 
+                    }
+                    author {
                       login
-                      avatarUrl
                     }
                   }
                 }
-              }
-              participants(first: 100) {
-                nodes {
-                  login
-                  avatarUrl
+                reviewRequests(first: 100) {
+                  nodes {
+                    requestedReviewer {
+                      ... on User {
+                        login
+                        avatarUrl
+                      }
+                    }
+                  }
+                }
+                participants(first: 100) {
+                  nodes {
+                    login
+                    avatarUrl
+                  }
                 }
               }
             }
+            }
           }
-          }
-        }
-      }`
+        }`
   }
 }

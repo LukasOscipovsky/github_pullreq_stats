@@ -91,6 +91,7 @@ class SideBar extends Component<SideProps, SideState> {
       this.props.triggerParentLoading(true);
 
       var prNumber: number = 30;
+      var currentDate = new Date();
       var hasNextPage: boolean = true;
       var after: string|null = null;
       var users: Array<User> = [];
@@ -106,7 +107,7 @@ class SideBar extends Component<SideProps, SideState> {
           after = prs.pageInfo.endCursor;
           hasNextPage = prs.pageInfo.hasNextPage;
     
-          ParseUtils.parseParent(users, prs.nodes);
+          ParseUtils.parseParent(users, prs.nodes, currentDate);
         })
       } while (hasNextPage)
   
