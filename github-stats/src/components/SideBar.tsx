@@ -7,11 +7,15 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
+import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import LoginUtils from '../utils/LoginUtils';
 import DateUtils from '../utils/DateUtils';
 import ParseUtils from '../utils/ParseUtils';
 import User from '../data/User';
 import axios from 'axios';
+import { yellow } from '@material-ui/core/colors';
+import { withStyles } from '@material-ui/core';
 
 interface SideState {
   accessToken: string;
@@ -19,6 +23,7 @@ interface SideState {
   showAccessToken: boolean;
   timeToRender: string;
   branch: string;
+  isMonthlyMode: boolean;
 }
 
 interface SideProps {
@@ -26,19 +31,31 @@ interface SideProps {
   triggerParentLoading(loading: boolean): void
 }
 
+const YellowCheckBox = withStyles({
+  root: {
+    color: yellow[500],
+    '&$checked': {
+      color: yellow[500],
+    },
+  },
+  checked: {},
+})((props: CheckboxProps) => <Checkbox color="default" {...props} />);
+
 class SideBar extends Component<SideProps, SideState> { 
     componentWillMount() {
       const ac = localStorage.getItem('accessToken');
       const repo = localStorage.getItem('repository');
       const ttr = localStorage.getItem('timeToRender');
       const br = localStorage.getItem('branch');
+      const isMm = localStorage.getItem('isMonthlyMode');
 
       this.setState({
         accessToken: ac === null ? '' : ac,
         repository: repo === null ? '' : repo,
         showAccessToken: false,
         timeToRender: ttr === null ? '' : ttr,
-        branch: br === null ? '' : br
+        branch: br === null ? '' : br,
+        isMonthlyMode: isMm == null ? false : Boolean(isMm)
       })
     }
 
@@ -61,6 +78,7 @@ class SideBar extends Component<SideProps, SideState> {
       localStorage.setItem('repository', this.state.repository);
       localStorage.setItem('timeToRender', this.state.timeToRender);
       localStorage.setItem('branch', this.state.branch);
+      localStorage.setItem('isMonthlyMode', this.state.isMonthlyMode.toString());
 
       this.getData();
       setInterval(() => {
@@ -91,9 +109,9 @@ class SideBar extends Component<SideProps, SideState> {
       this.props.triggerParentLoading(true);
 
       var prNumber: number = 30;
-      var currentDate = new Date();
       var hasNextPage: boolean = true;
       var after: string|null = null;
+      var pullRequests: Array<String> = [];
       var users: Array<User> = [];
       
       do {
@@ -107,9 +125,11 @@ class SideBar extends Component<SideProps, SideState> {
           after = prs.pageInfo.endCursor;
           hasNextPage = prs.pageInfo.hasNextPage;
     
-          ParseUtils.parseParent(users, prs.nodes, currentDate);
+          pullRequests.push(prs.nodes)
         })
       } while (hasNextPage)
+
+      ParseUtils.parseParent(users, pullRequests.concat(...pullRequests), this.state.isMonthlyMode);
   
       users = users.filter(u => u.total > 0).sort((u1 ,u2) => ((u1.approves/u1.total) < (u2.approves/u2.total)) ? 1 : -1)
       
@@ -167,6 +187,15 @@ class SideBar extends Component<SideProps, SideState> {
                   style={{fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20}}
               />
             </Tooltip>
+            <FormControlLabel
+                value="Monthly Mode" 
+                style={{fontFamily: 'Trim,DAZN-Bold,Oscine', width: 200, marginTop: 20, background: 'grey', marginLeft: 15}}
+                control={<YellowCheckBox 
+                          onChange={event => this.setState({isMonthlyMode: Boolean(event.currentTarget.checked)})}
+                          checked={this.state.isMonthlyMode}
+                          />}
+                label="Monthly Mode"
+                />
             <Button
               style={{backgroundColor: '#242d34', marginRight: 20, marginTop: 20, color: '#f8fc00', fontFamily: 'Trim,DAZN-Bold,Oscine'}}
               onClick={() => this.getDataInInterval()}>

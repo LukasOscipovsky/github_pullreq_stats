@@ -3,13 +3,21 @@ import DateUtils from './DateUtils'
 
 export default class ParseUtils {
 
-  static parseParent(users: Array<User>, prs: Array<String>, currentDate: Date) {
+  static parseParent(users: Array<User>, prs: Array<String>, isMonthlyMode: boolean) {
     prs.forEach(pr => {
       var pObj = JSON.parse(JSON.stringify(pr));
       var date = new Date(pObj.closedAt);
 
-      if (pObj.author != null && DateUtils.isDateInCurrentMonthAndYear(date, currentDate)) {
-        this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login);
+      if (isMonthlyMode) {
+        var currentDate = new Date();
+
+        if (pObj.author != null && DateUtils.isDateInCurrentMonthAndYear(date, currentDate)) {
+          this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login);
+        }
+      } else {
+        if (pObj.author != null) {
+          this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login);
+        }
       }
     });
   }
