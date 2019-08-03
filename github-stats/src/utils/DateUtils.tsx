@@ -8,7 +8,7 @@ export default class DateUtils {
         return parseInt(time.replace(/\D/g, "")) * 24 * 60 * 1000;
     }
 
-    static isDateInCurrentMonthAndYear(date: Date, currentDate: Date): boolean {
-        return date.getMonth() === currentDate.getMonth() && date.getFullYear() === currentDate.getFullYear();
+    static isDateInCurrentMonthAndYear(date: Date, month: number, year: number): boolean {
+        return date.getMonth() === month && date.getFullYear() === year;
     }
 }

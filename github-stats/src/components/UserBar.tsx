@@ -19,22 +19,31 @@ class UserBar extends Component<IProps, {}> {
   }
 
   render() {
+
+    let colorToRender;
+
+    if (!this.props.user.bestInTheMonth) {
+      colorToRender = '#f8fc00';
+    } else {
+      colorToRender = '#7FFF00';
+    }
+
     return (
       <div className='UserBar'>
         <div className='UserPictureDiv'>
           <img src={this.props.user.avatar} className='UserPicture' alt="github user profile pic"/>
         </div>
-        <div className='FormDiv'>
+        <div className='FormDiv' style={{background: colorToRender}}>
           <label className='FormLabel'>{this.props.user.name.toUpperCase()}</label>
         </div>
         <CircularProgressbar
           percentage={this.getPercentage()}
           text={`${this.getPercentage()}%`}
         />
-        <div className='DataDiv'>
+        <div className='DataDiv' style={{background: colorToRender}}>
           <label className='DataLabel'>{this.props.user.approves} / {this.props.user.total}</label>
         </div>
-        <div className='DataDiv'>
+        <div className='DataDiv' style={{background: colorToRender}}>
           <FontAwesomeIcon color='#242d34' size='2x' icon={faComments} />
           <label className='DataLabel'>{this.props.user.comments}</label>
         </div>

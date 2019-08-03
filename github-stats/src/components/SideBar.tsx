@@ -112,7 +112,6 @@ class SideBar extends Component<SideProps, SideState> {
       var hasNextPage: boolean = true;
       var after: string|null = null;
       var pullRequests: Array<String> = [];
-      var users: Array<User> = [];
       
       do {
         await axios.post(LoginUtils.getUrl(this.state.accessToken),{
@@ -129,9 +128,7 @@ class SideBar extends Component<SideProps, SideState> {
         })
       } while (hasNextPage)
 
-      ParseUtils.parseParent(users, pullRequests.concat(...pullRequests), this.state.isMonthlyMode);
-  
-      users = users.filter(u => u.total > 0).sort((u1 ,u2) => ((u1.approves/u1.total) < (u2.approves/u2.total)) ? 1 : -1)
+      var users = ParseUtils.parseParent(pullRequests.concat(...pullRequests), this.state.isMonthlyMode);
       
       this.props.triggerParentUpdate(users, this.state.repository);
     }
