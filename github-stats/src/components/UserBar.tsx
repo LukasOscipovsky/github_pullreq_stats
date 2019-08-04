@@ -39,6 +39,14 @@ class UserBar extends Component<IProps, {}> {
         <CircularProgressbar
           percentage={this.getPercentage()}
           text={`${this.getPercentage()}%`}
+          styles={{
+            path: {
+              stroke: colorToRender
+            },
+            text: {
+              fill: colorToRender
+            }
+          }}
         />
         <div className='DataDiv' style={{background: colorToRender}}>
           <label className='DataLabel'>{this.props.user.approves} / {this.props.user.total}</label>

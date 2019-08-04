@@ -13,7 +13,7 @@ export default class ParseUtils {
       var currentDate = new Date();
 
       if (isMonthlyMode) {
-        if (pObj.author != null && DateUtils.isDateInCurrentMonthAndYear(date, currentDate.getMonth(), currentDate.getFullYear())) {
+        if (pObj.author != null && DateUtils.isDateInCurrentMonthAndYear(date, currentDate.getMonth() - 1, currentDate.getFullYear())) {
           this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login);
         }
       } else {
@@ -31,7 +31,6 @@ export default class ParseUtils {
       monthlyUsers = monthlyUsers.filter(u => u.total > 0).sort((u1 ,u2) => u1.approves < u2.approves ? 1 : -1)
       var user = monthlyUsers.entries().next().value["1"];
 
-      console.log(monthlyUsers);
       var best = users.find(u => user.name === u.name);
 
       if (best !== undefined) {

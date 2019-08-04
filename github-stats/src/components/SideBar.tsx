@@ -55,7 +55,7 @@ class SideBar extends Component<SideProps, SideState> {
         showAccessToken: false,
         timeToRender: ttr === null ? '' : ttr,
         branch: br === null ? '' : br,
-        isMonthlyMode: isMm == null ? false : Boolean(isMm)
+        isMonthlyMode: isMm === null ? false : Boolean(isMm).valueOf()
       })
     }
 
