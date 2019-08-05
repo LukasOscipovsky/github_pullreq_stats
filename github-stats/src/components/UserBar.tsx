@@ -18,22 +18,21 @@ class UserBar extends Component<IProps, {}> {
     return Math.floor((100 * this.props.user.approves) / this.props.user.total);
   }
 
+  getMonthlyPercentage(): number {
+    return Math.floor((100 * this.props.user.monthlyApproves) / this.props.user.monthlyTotal);
+  }
+
   render() {
 
-    let colorToRender;
-
-    if (!this.props.user.bestInTheMonth) {
-      colorToRender = '#f8fc00';
-    } else {
-      colorToRender = '#7FFF00';
-    }
+    let color = '#f8fc00'
+    let monthlyColor = '#CED0D2'
 
     return (
       <div className='UserBar'>
         <div className='UserPictureDiv'>
-          <img src={this.props.user.avatar} className='UserPicture' alt="github user profile pic"/>
+          <img src={this.props.user.avatar} className='UserPicture' alt="github user profile pic" />
         </div>
-        <div className='FormDiv' style={{background: colorToRender}}>
+        <div className='FormDiv' style={{ background: color }}>
           <label className='FormLabel'>{this.props.user.name.toUpperCase()}</label>
         </div>
         <CircularProgressbar
@@ -41,19 +40,38 @@ class UserBar extends Component<IProps, {}> {
           text={`${this.getPercentage()}%`}
           styles={{
             path: {
-              stroke: colorToRender
+              stroke: color
             },
             text: {
-              fill: colorToRender
+              fill: color
             }
           }}
         />
-        <div className='DataDiv' style={{background: colorToRender}}>
+        <div className='DataDiv' style={{ background: color }}>
           <label className='DataLabel'>{this.props.user.approves} / {this.props.user.total}</label>
         </div>
-        <div className='DataDiv' style={{background: colorToRender}}>
+        <div className='DataDiv' style={{ background: color }}>
           <FontAwesomeIcon color='#242d34' size='2x' icon={faComments} />
           <label className='DataLabel'>{this.props.user.comments}</label>
+        </div>
+        <CircularProgressbar
+          percentage={this.getMonthlyPercentage()}
+          text={`${this.getMonthlyPercentage()}%`}
+          styles={{
+            path: {
+              stroke: monthlyColor
+            },
+            text: {
+              fill: monthlyColor
+            }
+          }}
+        />
+        <div className='DataDiv' style={{ background: monthlyColor }}>
+          <label className='DataLabel'>{this.props.user.monthlyApproves} / {this.props.user.monthlyTotal}</label>
+        </div>
+        <div className='DataDiv' style={{ background: monthlyColor }}>
+          <FontAwesomeIcon color='#242d34' size='2x' icon={faComments} />
+          <label className='DataLabel'>{this.props.user.monthlyComments}</label>
         </div>
       </div>
     );

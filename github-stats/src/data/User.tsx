@@ -4,7 +4,9 @@ export default class User {
     private _approves: number;
     private _comments: number;
     private _total: number;
-    private _bestInTheMonth: boolean;
+    private _monthlyApproves: number;
+    private _monthlyComments: number;
+    private _monthlyTotal: number;
 
     constructor(name: string, avatar: string) {
         this._name = name;
@@ -12,7 +14,9 @@ export default class User {
         this._approves = 0;
         this._comments = 0;
         this._total = 0;
-        this._bestInTheMonth = false;
+        this._monthlyApproves = 0;
+        this._monthlyComments = 0;
+        this._monthlyTotal = 0;
     }
 
     public set approves(approves: number) {
@@ -27,8 +31,16 @@ export default class User {
         this._total = total;
     }
 
-    public set bestInTheMonth(bestInTheMonth: boolean) {
-        this._bestInTheMonth = bestInTheMonth;
+    public set monthlyApproves(monthlyApproves: number) {
+        this._monthlyApproves = monthlyApproves;
+    }
+
+    public set monthlyComments(monthlyComments: number) {
+        this._monthlyComments = monthlyComments;
+    }
+
+    public set monthlyTotal(monthlyTotal: number) {
+        this._monthlyTotal = monthlyTotal;
     }
 
     public get name(): string {
@@ -51,7 +63,15 @@ export default class User {
         return this._total;
     }
 
-    public get bestInTheMonth(): boolean {
-        return this._bestInTheMonth;
+    public get monthlyApproves(): number {
+        return this._monthlyApproves;
+    }
+
+    public get monthlyComments(): number {
+        return this._monthlyComments;
+    }
+
+    public get monthlyTotal(): number {
+        return this._monthlyTotal;
     }
 }
