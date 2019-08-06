@@ -3,8 +3,9 @@ import DateUtils from './DateUtils'
 
 export default class ParseUtils {
 
-  static parseParent(prs: Array<String>) : Array<User> {
+  static parseParent(prs: Array<String>): Array<[number, User]> {
     var users: Array<User> = [];
+    var usersWithIndex: Array<[number, User]> = []
     var currentDate = new Date();
 
     prs.forEach(pr => {
@@ -18,10 +19,14 @@ export default class ParseUtils {
       }
     });
 
-    return users.filter(u => u.total > 0).sort((u1 ,u2) => ((u1.approves/u1.total) < (u2.approves/u2.total)) ? 1 : -1);
+    users.filter(u => u.total > 0)
+      .sort((u1, u2) => u1.monthlyApproves < u2.monthlyApproves ? 1 : -1)
+      .forEach((u, i) => usersWithIndex.push([i, u]));
+
+    return usersWithIndex.sort((u1, u2) => ((u1[1].approves / u1[1].total) < (u2[1].approves / u2[1].total)) ? 1 : -1)
   }
 
-  static parse(users: Array<User>, participants: Array<String>, reviewRequests: Array<String>, reviews: Array<String>, 
+  static parse(users: Array<User>, participants: Array<String>, reviewRequests: Array<String>, reviews: Array<String>,
     author: string, isInPreviousMonth: boolean) {
     reviewRequests.forEach(rqst => {
       var rObj = JSON.parse(JSON.stringify(rqst));
@@ -78,10 +83,10 @@ export default class ParseUtils {
       var rObj = JSON.parse(JSON.stringify(r));
       if (rObj.author != null) {
         this.update(users, rObj.author.login, rObj.comments.totalCount);
-        
+
         if (isInPreviousMonth) {
           this.monthlyUpdate(users, rObj.author.login, rObj.comments.totalCount);
-        }  
+        }
       }
     });
   }
