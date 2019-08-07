@@ -27,8 +27,9 @@ export default class ParseUtils {
     var usersWithIndex: Array<[number, User]> = []
 
     var maxComments: number = Math.max.apply(Math, users.map(u => u.monthlyComments));
+    var maxTotal: number = Math.max.apply(Math, users.map(u => u.monthlyTotal));
 
-    users.forEach(u => u.rating = (u.monthlyApproves / u.monthlyTotal) + (u.monthlyComments / maxComments));
+    users.forEach(u => u.rating = (u.monthlyApproves / u.monthlyTotal) + ((u.monthlyComments * (maxTotal / u.monthlyTotal)) / maxComments));
 
     users.sort((u1, u2) => u1.rating < u2.rating ? 1 : -1)
       .forEach((u, i) => usersWithIndex.push([i, u]));
