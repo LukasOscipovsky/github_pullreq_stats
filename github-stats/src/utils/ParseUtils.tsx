@@ -5,7 +5,6 @@ export default class ParseUtils {
 
   static parseParent(prs: Array<String>): Array<[number, User]> {
     var users: Array<User> = [];
-    var usersWithIndex: Array<[number, User]> = []
     var currentDate = new Date();
 
     prs.forEach(pr => {
@@ -19,11 +18,24 @@ export default class ParseUtils {
       }
     });
 
-    users.filter(u => u.total > 0)
-      .sort((u1, u2) => u1.monthlyApproves < u2.monthlyApproves ? 1 : -1)
-      .forEach((u, i) => usersWithIndex.push([i, u]));
+    var usersWithIndex = this.rate(users.filter(u => u.total > 0 && u.monthlyTotal !== 0));
 
     return usersWithIndex.sort((u1, u2) => ((u1[1].approves / u1[1].total) < (u2[1].approves / u2[1].total)) ? 1 : -1)
+  }
+
+  static rate(users: Array<User>): Array<[number, User]> {
+    var usersWithIndex: Array<[number, User]> = []
+
+    var maxComments: number = Math.max.apply(Math, users.map(u => u.monthlyComments));
+
+    users.forEach(u => u.rating = (u.monthlyApproves / u.monthlyTotal) + (u.monthlyComments / maxComments));
+
+    users.sort((u1, u2) => u1.rating < u2.rating ? 1 : -1)
+      .forEach((u, i) => usersWithIndex.push([i, u]));
+
+    console.log(usersWithIndex);
+
+    return usersWithIndex;
   }
 
   static parse(users: Array<User>, participants: Array<String>, reviewRequests: Array<String>, reviews: Array<String>,

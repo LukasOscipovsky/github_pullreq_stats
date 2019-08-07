@@ -29,9 +29,11 @@ class Stats extends Component<{}, StatsState> {
   }
 
   compsFromList() {
+    let size = this.state.participants.length;
+
     return this.state.participants
       .map((p) => {
-        return (<UserBar user={p} />)
+        return (<UserBar user={p} sizeOfArray={size} />)
       });
   }
 
@@ -39,6 +41,8 @@ class Stats extends Component<{}, StatsState> {
     const loading = this.state.loading;
 
     let divRender;
+    let allTimeStats;
+    let monthlyStats;
 
     if (loading) {
       divRender = <div className="Loading">
@@ -48,6 +52,9 @@ class Stats extends Component<{}, StatsState> {
         />
         <label className="LoadingLabel">LOADING</label>
       </div>;
+
+      allTimeStats = 'All Time Stats';
+      monthlyStats = 'Last Month Stats';
     } else {
       divRender = <div className='StatsDiv'>
         {this.compsFromList()}
@@ -60,9 +67,15 @@ class Stats extends Component<{}, StatsState> {
           triggerParentUpdate={(data, repository) => this.getData(data, repository)}
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
-        <div className="Repo">
-          <label className="RepoLabel">{this.state.repository}</label>
+        <div className="Title" style={{ left: 900, background: '#f8fc00' }}>
+          <label className="TitleLabel">{this.state.repository}</label>
         </div>
+        {/* <div className="Title" style={{ left: -200, background: '#f8fc00' }}>
+          <label className="TitleLabel">{allTimeStats}</label>
+        </div>
+        <div className="Title" style={{ left: 350, background: '#CED0D2' }}>
+          <label className="TitleLabel">{monthlyStats}</label>
+        </div> */}
         {divRender}
       </div>
     );

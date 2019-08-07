@@ -7,6 +7,7 @@ export default class User {
     private _monthlyApproves: number;
     private _monthlyComments: number;
     private _monthlyTotal: number;
+    private _rating: number
 
     constructor(name: string, avatar: string) {
         this._name = name;
@@ -17,6 +18,7 @@ export default class User {
         this._monthlyApproves = 0;
         this._monthlyComments = 0;
         this._monthlyTotal = 0;
+        this._rating = 0;
     }
 
     public set approves(approves: number) {
@@ -41,6 +43,10 @@ export default class User {
 
     public set monthlyTotal(monthlyTotal: number) {
         this._monthlyTotal = monthlyTotal;
+    }
+
+    public set rating(rating: number) {
+        this._rating = rating;
     }
 
     public get name(): string {
@@ -73,5 +79,9 @@ export default class User {
 
     public get monthlyTotal(): number {
         return this._monthlyTotal;
+    }
+
+    public get rating(): number {
+        return this._rating;
     }
 }
