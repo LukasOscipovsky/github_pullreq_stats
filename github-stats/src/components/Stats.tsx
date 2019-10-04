@@ -38,44 +38,42 @@ class Stats extends Component<{}, StatsState> {
   }
 
   render() {
-    const loading = this.state.loading;
-
     let divRender;
     let allTimeStats;
     let monthlyStats;
 
-    if (loading) {
-      divRender = <div className="Loading">
+    if (this.state.loading) {
+      divRender = <div className="loading">
         <CircularProgress
           size={100}
           style={{ color: '#f8fc00' }}
         />
-        <label className="LoadingLabel">LOADING</label>
+        <label className="label">LOADING</label>
       </div>;
-
+    } else {
       allTimeStats = 'All Time Stats';
       monthlyStats = 'Last Month Stats';
-    } else {
-      divRender = <div className='StatsDiv'>
+
+      divRender = <div className='stats'>
         {this.compsFromList()}
       </div>
     }
 
     return (
-      <div className='MainStatsDiv'>
+      <div className='main'>
         <SideBar
           triggerParentUpdate={(data, repository) => this.getData(data, repository)}
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
-        <div className="Title" style={{ left: 900, background: '#f8fc00' }}>
-          <label className="TitleLabel">{this.state.repository}</label>
+        <div className="title" style={{ left: '48%', background: '#f8fc00' }}>
+          <label className="label">{this.state.repository}</label>
         </div>
-        {/* <div className="Title" style={{ left: -200, background: '#f8fc00' }}>
-          <label className="TitleLabel">{allTimeStats}</label>
+        <div className="title" style={{ left: '-13%', background: '#f8fc00' }}>
+          <label className="label">{allTimeStats}</label>
         </div>
-        <div className="Title" style={{ left: 350, background: '#CED0D2' }}>
-          <label className="TitleLabel">{monthlyStats}</label>
-        </div> */}
+        <div className="title" style={{ left: '13%', background: '#CED0D2' }}>
+          <label className="label">{monthlyStats}</label>
+        </div>
         {divRender}
       </div>
     );

@@ -1,12 +1,10 @@
 @import './UserBar.css';
 @import './SideBar.css';
-
-.MainStatsDiv {
+.main {
     display: flex;
 }
 
-.StatsDiv {
-    float:right;
+.stats {
     background: #242d34;
     flex-wrap: wrap;
     display: flex;
@@ -15,11 +13,7 @@
     justify-content: center;
 }
 
-.StatsName {
-    color: #f8fc00;
-}
-
-.Loading {
+.loading {
     display: flex;
     background: #242d34;
     flex-direction: column;
@@ -29,8 +23,8 @@
     transform: translate(-50%, 0);
 }
 
-.LoadingLabel {
-    font-family: Trim,'DAZN-Bold',Oscine;
+.loading .label {
+    font-family: Trim, 'DAZN-Bold', Oscine;
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -38,20 +32,19 @@
     margin-top: 20px;
 }
 
-.Title {
-    width: 100%;
+.title {
     position: absolute;
     top: 45%;
+    width: 100%;
     transform: rotate(90deg);
 }
 
-.TitleLabel {
-    font-family: Trim,'DAZN-Bold',Oscine;
+.title .label {
+    font-family: Trim, 'DAZN-Bold', Oscine;
     font-style: normal;
     font-weight: 700;
     font-size: 60px;
     color: #242d34;
     margin-top: 20px;
-    height: 40vh;
     text-transform: capitalize;
 }

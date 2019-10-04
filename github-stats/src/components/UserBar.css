@@ -1,111 +1,89 @@
- .UserBar {
+.user {
     background: #242d34;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 90%;
- } 
-
-.UserPictureDiv {
-  width: 8vh;
-  padding: 20px;
+    margin-top: 8px;
 }
 
-.UserPicture {
+.avatar {
+    width: 5vh;
+    margin-right: 40px;
+}
+
+.avatar .picture {
     width: 60px;
     margin: 15px;
     border: 2px solid #343b3f;
     border-radius: 5px;
-  }
-
-.FormLabel {
-  font-family: Trim,'DAZN-Bold',Oscine;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: #242d34;
-  letter-spacing: .0em;
-  word-spacing: initial;
-  text-transform: none;
-  text-indent: 0px;
-  text-shadow: none;
-  text-decoration: none;
-  text-rendering: auto;
-  border: 0;
-  overflow: hidden;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  display: block;
+    box-shadow: 2px 3px 8px #000000;
 }
 
-.FormDiv {
-  background: #f8fc00;
-  margin: 10px;
-  width: 400px;
-  max-width: 400px;
-  align-items: center;
-  text-align: center;
-  border-radius: 2px;
+.form {
+    background: #f8fc00;
+    margin: 10px;
+    width: 350px;
+    max-width: 400px;
+    align-items: center;
+    text-align: center;
+    border-radius: 2px;
+    padding: 10px;
+    box-shadow: 2px 3px 8px #000000;
+}
+
+.form .label {
+    font-family: Trim, 'DAZN-Bold', Oscine;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    color: #242d34;
+}
+
+.data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 13vh;
+    max-width: 10%;
+    background: #f8fc00;
+    border: 2px solid #343b3f;
+    border-radius: 5px;
+    margin-right: 10px;
+    box-shadow: 2px 3px 8px #000000;
+}
+
+.data .label {
+    font-family: Trim, 'DAZN-Bold', Oscine;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    color: #242d34;
+    padding: 10px;
 }
 
 .CircularProgressbar {
-    width: 8vh;
+    width: 7vh;
     margin-right: 10px;
-    margin-left: 10px;
-    padding-left: 100px;
+    margin-left: 160px;
 }
 
 .CircularProgressbar .CircularProgressbar-path {
     stroke-linecap: butt;
     transition: stroke-dashoffset 0.5s ease 0s;
 }
-  
+
 .CircularProgressbar .CircularProgressbar-trail {
     stroke: #343b3f;
 }
-  
+
 .CircularProgressbar .CircularProgressbar-text {
     font-size: 25px;
-    font-family: Trim,"DAZN-Bold",Oscine;
+    font-family: Trim, "DAZN-Bold", Oscine;
     font-style: normal;
     font-weight: 700;
     dominant-baseline: middle;
     text-anchor: middle;
     display: inline-block;
-    position: relative;
     border: 0;
-    overflow: hidden;
 }
-
-.DataDiv {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 15vh;
-    max-width: 10%;
-    padding-left: 1px;
-    background: #f8fc00;
-    border: 2px solid #343b3f;
-    border-radius: 5px;
-    margin-right: 10px;
-}
-
-.DataLabel {
-    font-family: Trim,'DAZN-Bold',Oscine;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 19px;
-    color: #242d34;
-    letter-spacing: .0em;
-    word-spacing: initial;
-    text-transform: none;
-    text-indent: 0px;
-    text-shadow: none;
-    text-decoration: none;
-    text-rendering: auto;
-    border: 0;
-    overflow: hidden;
-    padding: 10px;
-}
-
-

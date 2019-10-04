@@ -44,12 +44,12 @@ class UserBar extends Component<IProps, {}> {
     }
 
     return (
-      <div className='UserBar'>
-        <div className='UserPictureDiv'>
-          <img src={user.avatar} className='UserPicture' alt="github user profile pic" />
+      <div className='user'>
+        <div className='avatar'>
+          <img src={user.avatar} className='picture' alt="github user profile pic" />
         </div>
-        <div className='FormDiv' style={{ background: color }}>
-          <label className='FormLabel'>{user.name.toUpperCase()}</label>
+        <div className='form' style={{ background: color }}>
+          <label className='label'>{user.name.toUpperCase()}</label>
         </div>
         <CircularProgressbar
           percentage={this.getPercentage()}
@@ -63,12 +63,12 @@ class UserBar extends Component<IProps, {}> {
             }
           }}
         />
-        <div className='DataDiv' style={{ background: color }}>
-          <label className='DataLabel'>{user.approves} / {user.total}</label>
+        <div className='data' style={{ background: color }}>
+          <label className='label'>{user.approves} / {user.total}</label>
         </div>
-        <div className='DataDiv' style={{ background: color }}>
+        <div className='data' style={{ background: color }}>
           <FontAwesomeIcon color='#242d34' size='2x' icon={faComments} />
-          <label className='DataLabel'>{user.comments}</label>
+          <label className='label'>{user.comments}</label>
         </div>
         <CircularProgressbar
           percentage={this.getMonthlyPercentage()}
@@ -82,12 +82,12 @@ class UserBar extends Component<IProps, {}> {
             }
           }}
         />
-        <div className='DataDiv' style={{ background: monthlyColor }}>
-          <label className='DataLabel'>{user.monthlyApproves} / {user.monthlyTotal}</label>
+        <div className='data' style={{ background: monthlyColor }}>
+          <label className='label'>{user.monthlyApproves} / {user.monthlyTotal}</label>
         </div>
-        <div className='DataDiv' style={{ background: monthlyColor }}>
+        <div className='data' style={{ background: monthlyColor }}>
           <FontAwesomeIcon color='#242d34' size='2x' icon={faComments} />
-          <label className='DataLabel'>{user.monthlyComments}</label>
+          <label className='label'>{user.monthlyComments}</label>
         </div>
       </div>
     );
