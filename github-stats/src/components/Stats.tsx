@@ -39,8 +39,9 @@ class Stats extends Component<{}, StatsState> {
 
   render() {
     let divRender;
-    let allTimeStats;
-    let monthlyStats;
+    let allTimeStats = 'All Time Stats';
+    let monthlyStats = 'Last Month Stats';
+    let user = 'User';
 
     if (this.state.loading) {
       divRender = <div className="loading">
@@ -51,8 +52,6 @@ class Stats extends Component<{}, StatsState> {
         <label className="label">LOADING</label>
       </div>;
     } else {
-      allTimeStats = 'All Time Stats';
-      monthlyStats = 'Last Month Stats';
 
       divRender = <div className='stats'>
         {this.compsFromList()}
@@ -65,14 +64,19 @@ class Stats extends Component<{}, StatsState> {
           triggerParentUpdate={(data, repository) => this.getData(data, repository)}
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
+        <div className='header'>
+          <div className="statstitle" style={{ marginLeft: 200, background: '#f8fc00' }}>
+            <label className="label" style={{ fontSize: 40 }}>{user}</label>
+          </div>
+          <div className="statstitle" style={{ marginLeft: 400, background: '#f8fc00' }}>
+            <label className="label" style={{ fontSize: 40 }}>{allTimeStats}</label>
+          </div>
+          <div className="statstitle" style={{ marginLeft: 230, background: '#CED0D2' }}>
+            <label className="label" style={{ fontSize: 40 }}>{monthlyStats}</label>
+          </div>
+        </div>
         <div className="title" style={{ left: '48%', background: '#f8fc00' }}>
-          <label className="label">{this.state.repository}</label>
-        </div>
-        <div className="title" style={{ left: '-13%', background: '#f8fc00' }}>
-          <label className="label">{allTimeStats}</label>
-        </div>
-        <div className="title" style={{ left: '13%', background: '#CED0D2' }}>
-          <label className="label">{monthlyStats}</label>
+          <label className="label" style={{ fontSize: 60 }}>{this.state.repository}</label>
         </div>
         {divRender}
       </div>
