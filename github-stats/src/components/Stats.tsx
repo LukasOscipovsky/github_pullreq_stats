@@ -52,7 +52,6 @@ class Stats extends Component<{}, StatsState> {
         <label className="label">LOADING</label>
       </div>;
     } else {
-
       divRender = <div className='stats'>
         {this.compsFromList()}
       </div>
@@ -64,18 +63,18 @@ class Stats extends Component<{}, StatsState> {
           triggerParentUpdate={(data, repository) => this.getData(data, repository)}
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
-        <div className='header'>
-          <div className="statstitle" style={{ marginLeft: 200, background: '#f8fc00' }}>
-            <label className="label" style={{ fontSize: 40 }}>{user}</label>
+        {/* <div className='header'>
+          <div className="statstitle" style={{ marginLeft: 150, background: '#f8fc00' }}>
+            <label className="label" style={{ fontSize: 30 }}>{user}</label>
           </div>
-          <div className="statstitle" style={{ marginLeft: 400, background: '#f8fc00' }}>
-            <label className="label" style={{ fontSize: 40 }}>{allTimeStats}</label>
+          <div className="statstitle" style={{ marginLeft: 380, background: '#f8fc00' }}>
+            <label className="label" style={{ fontSize: 30 }}>{allTimeStats}</label>
           </div>
-          <div className="statstitle" style={{ marginLeft: 230, background: '#CED0D2' }}>
-            <label className="label" style={{ fontSize: 40 }}>{monthlyStats}</label>
+          <div className="statstitle" style={{ marginLeft: 250, background: '#CED0D2' }}>
+            <label className="label" style={{ fontSize: 30 }}>{monthlyStats}</label>
           </div>
-        </div>
-        <div className="title" style={{ left: '48%', background: '#f8fc00' }}>
+        </div> */}
+        <div className="title" style={{ left: '47.5%', background: '#f8fc00' }}>
           <label className="label" style={{ fontSize: 60 }}>{this.state.repository}</label>
         </div>
         {divRender}
