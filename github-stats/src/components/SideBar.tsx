@@ -12,6 +12,9 @@ import DateUtils from '../utils/DateUtils';
 import ParseUtils from '../utils/ParseUtils';
 import User from '../data/User';
 import axios from 'axios';
+import FormControl from '@material-ui/core/FormControl/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
 
 interface SideState {
   accessToken: string;
@@ -19,10 +22,11 @@ interface SideState {
   showAccessToken: boolean;
   timeToRender: string;
   branch: string;
+  ranking: Boolean;
 }
 
 interface SideProps {
-  triggerParentUpdate(participants: Array<[number, User]>, repository: string): void
+  triggerParentUpdate(participants: Array<[number, User]>, repository: string, ranking: Boolean): void
   triggerParentLoading(loading: boolean): void
 }
 
@@ -32,6 +36,7 @@ class SideBar extends Component<SideProps, SideState> {
     const repo = localStorage.getItem('repository');
     const ttr = localStorage.getItem('timeToRender');
     const br = localStorage.getItem('branch');
+    const r = localStorage.getItem('ranking');
 
     this.setState({
       accessToken: ac === null ? '' : ac,
@@ -39,6 +44,7 @@ class SideBar extends Component<SideProps, SideState> {
       showAccessToken: false,
       timeToRender: ttr === null ? '' : ttr,
       branch: br === null ? '' : br,
+      ranking: r === null ? false : Boolean(r)
     })
   }
 
@@ -61,6 +67,7 @@ class SideBar extends Component<SideProps, SideState> {
     localStorage.setItem('repository', this.state.repository);
     localStorage.setItem('timeToRender', this.state.timeToRender);
     localStorage.setItem('branch', this.state.branch);
+    localStorage.setItem('ranking', this.state.ranking.toString());
 
     this.getData();
     setInterval(() => {
@@ -112,7 +119,9 @@ class SideBar extends Component<SideProps, SideState> {
 
     var users: Array<[number, User]> = ParseUtils.parseParent(pullRequests.concat(...pullRequests));
 
-    this.props.triggerParentUpdate(users, this.state.repository);
+
+    console.log(this.state.ranking);
+    this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking);
   }
 
   render() {
@@ -166,6 +175,24 @@ class SideBar extends Component<SideProps, SideState> {
               style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20 }}
             />
           </Tooltip>
+          <FormControl
+            style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', width: 200, background: 'white', marginTop: 20 }}
+            variant="outlined">
+            <InputLabel htmlFor="outlined-ranking">
+              Ranking:
+            </InputLabel>
+            <Select
+              value={this.state.ranking}
+              onChange={event => this.setState({ ranking: event.currentTarget.value === 'Enabled' ? true : false })}
+              inputProps={{
+                name: 'ranking',
+                id: 'outlined-ranking',
+              }}
+            >
+              <option value={1}>Enabled</option>
+              <option value={0}>Disabled</option>
+            </Select>
+          </FormControl>
           <Button
             style={{ backgroundColor: '#242d34', marginRight: 20, marginTop: 20, color: '#f8fc00', fontFamily: 'Trim,DAZN-Bold,Oscine' }}
             onClick={() => this.getDataInInterval()}>

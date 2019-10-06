@@ -8,6 +8,7 @@ interface StatsState {
   loading: boolean;
   participants: Array<[number, User]>;
   repository: string;
+  ranking: Boolean;
 }
 
 class Stats extends Component<{}, StatsState> {
@@ -16,16 +17,20 @@ class Stats extends Component<{}, StatsState> {
     this.state = {
       loading: false,
       participants: [],
-      repository: ''
+      repository: '',
+      ranking: false
     }
   }
 
-  getData(data: Array<[number, User]>, repository: string) {
+  getData(data: Array<[number, User]>, repository: string, ranking: Boolean) {
     this.setState({
       loading: false,
       participants: data,
-      repository: repository
+      repository: repository,
+      ranking: ranking
     })
+
+    console.log(this.state.ranking);
   }
 
   compsFromList() {
@@ -33,7 +38,7 @@ class Stats extends Component<{}, StatsState> {
 
     return this.state.participants
       .map((p) => {
-        return (<UserBar user={p} sizeOfArray={size} />)
+        return (<UserBar user={p} sizeOfArray={size} ranking={this.state.ranking} />)
       });
   }
 
@@ -60,7 +65,7 @@ class Stats extends Component<{}, StatsState> {
     return (
       <div className='main'>
         <SideBar
-          triggerParentUpdate={(data, repository) => this.getData(data, repository)}
+          triggerParentUpdate={(data, repository, ranking) => this.getData(data, repository, ranking)}
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
         {/* <div className='header'>

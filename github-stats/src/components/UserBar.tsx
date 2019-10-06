@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 interface IProps {
   user: [number, User],
   sizeOfArray: number;
+  ranking: Boolean;
 }
 
 class UserBar extends Component<IProps, {}> {
@@ -28,19 +29,30 @@ class UserBar extends Component<IProps, {}> {
   }
 
   render() {
+    let [color, monthlyColor] = userColor(this.props.user[0], this.props.sizeOfArray, this.props.ranking)
     let user = this.props.user[1];
-    let color;
-    let monthlyColor;
 
-    if (this.props.user[0] === 0) {
-      color = '#7FFF00'
-      monthlyColor = '#7FFF00'
-    } else if (this.props.user[0] === this.props.sizeOfArray - 1) {
-      color = '#DC143C'
-      monthlyColor = '#DC143C'
-    } else {
-      color = '#f8fc00'
-      monthlyColor = '#CED0D2'
+    function userColor(index: number, sizeOfArray: number, ranking: Boolean): [string, string] {
+      let color;
+      let monthlyColor;
+
+      if (ranking) {
+        if (index === 0) {
+          color = '#7FFF00'
+          monthlyColor = '#7FFF00'
+        } else if (index === sizeOfArray - 1) {
+          color = '#DC143C'
+          monthlyColor = '#DC143C'
+        } else {
+          color = '#f8fc00'
+          monthlyColor = '#CED0D2'
+        }
+      } else {
+        color = '#f8fc00'
+        monthlyColor = '#CED0D2'
+      }
+
+      return [color, monthlyColor]
     }
 
     return (
