@@ -15,6 +15,7 @@ import axios from 'axios';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 
 interface SideState {
   accessToken: string;
@@ -119,16 +120,14 @@ class SideBar extends Component<SideProps, SideState> {
 
     var users: Array<[number, User]> = ParseUtils.parseParent(pullRequests.concat(...pullRequests));
 
-
-    console.log(this.state.ranking);
     this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking);
   }
 
   render() {
     return (
-      <Menu className="SideBar">
-        <label className="SideLabel">SETTINGS</label>
-        <div className="Inputs">
+      <Menu >
+        <label>SETTINGS</label>
+        <div>
           <TextField
             required
             label="AccessToken"
@@ -176,25 +175,27 @@ class SideBar extends Component<SideProps, SideState> {
             />
           </Tooltip>
           <FormControl
-            style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', width: 200, background: 'white', marginTop: 20 }}
+            style={{ width: 200, background: 'white', marginTop: 20 }}
             variant="outlined">
-            <InputLabel htmlFor="outlined-ranking">
-              Ranking:
+            <InputLabel style={{ marginTop: 15 }} htmlFor="outlined-ranking">
+              Ranking
             </InputLabel>
             <Select
-              value={this.state.ranking}
-              onChange={event => this.setState({ ranking: event.currentTarget.value === 'Enabled' ? true : false })}
+              style={{ padding: 10 }}
+              variant="outlined"
+              value={this.state.ranking ? 1 : 0}
+              onChange={event => this.setState({ ranking: parseInt(event.target.value) === 1 ? true : false })}
               inputProps={{
                 name: 'ranking',
                 id: 'outlined-ranking',
               }}
             >
-              <option value={1}>Enabled</option>
-              <option value={0}>Disabled</option>
+              <MenuItem value={0}>Disabled</MenuItem>
+              <MenuItem value={1}>Enabled</MenuItem>
             </Select>
           </FormControl>
           <Button
-            style={{ backgroundColor: '#242d34', marginRight: 20, marginTop: 20, color: '#f8fc00', fontFamily: 'Trim,DAZN-Bold,Oscine' }}
+            style={{ backgroundColor: '#242d34', marginRight: 20, marginTop: 50, color: '#f8fc00', fontFamily: 'Trim,DAZN-Bold,Oscine' }}
             onClick={() => this.getDataInInterval()}>
             Save
             </Button>

@@ -4,6 +4,7 @@ import User from '../data/User';
 import SideBar from './SideBar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+
 interface StatsState {
   loading: boolean;
   participants: Array<[number, User]>;
@@ -12,8 +13,13 @@ interface StatsState {
 }
 
 class Stats extends Component<{}, StatsState> {
+  scrollTop: HTMLDivElement | null;
+  scrollDown: HTMLDivElement | null;
+
   constructor(props: any) {
     super(props);
+    this.scrollTop = null;
+    this.scrollDown = null;
     this.state = {
       loading: false,
       participants: [],
@@ -29,9 +35,28 @@ class Stats extends Component<{}, StatsState> {
       repository: repository,
       ranking: ranking
     })
-
-    console.log(this.state.ranking);
   }
+
+  // componentDidUpdate() {
+  //   setInterval(() => {
+  //     this.scrollToBottom();
+  //   }, 1000);
+  //   setInterval(() => {
+  //     this.scrollToTop();
+  //   }, 2000);
+  // }
+
+  // scrollToBottom = () => {
+  //   if (this.scrollDown !== null) {
+  //     this.scrollDown.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
+
+  // scrollToTop = () => {
+  //   if (this.scrollTop !== null) {
+  //     this.scrollTop.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
 
   compsFromList() {
     let size = this.state.participants.length;
@@ -58,7 +83,9 @@ class Stats extends Component<{}, StatsState> {
       </div>;
     } else {
       divRender = <div className='stats'>
+        <div ref={(el) => { this.scrollTop = el; }} />
         {this.compsFromList()}
+        <div ref={(el) => { this.scrollDown = el; }} />
       </div>
     }
 
