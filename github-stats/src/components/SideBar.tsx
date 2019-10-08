@@ -7,8 +7,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
-import LoginUtils from '../utils/LoginUtils';
-import DateUtils from '../utils/DateUtils';
+import { getUrl, getHeaders, getQuery } from '../utils/login';
+import { getTimeInMillis } from '../utils/date';
 import ParseUtils from '../utils/ParseUtils';
 import User from '../data/User';
 import axios from 'axios';
@@ -73,7 +73,7 @@ class SideBar extends Component<SideProps, SideState> {
     this.getData();
     setInterval(() => {
       this.getData();
-    }, DateUtils.getTimeInMillis(this.state.timeToRender))
+    }, getTimeInMillis(this.state.timeToRender))
   }
 
   validateState(): boolean {
@@ -104,9 +104,9 @@ class SideBar extends Component<SideProps, SideState> {
     var pullRequests: Array<String> = [];
 
     do {
-      await axios.post(LoginUtils.getUrl(this.state.accessToken), {
-        query: LoginUtils.getQuery(prNumber, this.state.repository, after, this.state.branch),
-        headers: LoginUtils.getHeaders()
+      await axios.post(getUrl(this.state.accessToken), {
+        query: getQuery(prNumber, this.state.repository, after, this.state.branch),
+        headers: getHeaders()
       })
         .then(response => {
           var prs = response.data.data.organization.repository.pullRequests;

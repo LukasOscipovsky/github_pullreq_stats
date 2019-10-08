@@ -1,5 +1,5 @@
 import User from '../data/User';
-import DateUtils from './DateUtils'
+import { isDateInCurrentMonthAndYear } from './date'
 
 export default class ParseUtils {
 
@@ -11,7 +11,7 @@ export default class ParseUtils {
       var pObj = JSON.parse(JSON.stringify(pr));
       var date = new Date(pObj.closedAt);
 
-      var isInPreviousMonth = DateUtils.isDateInCurrentMonthAndYear(date, currentDate.getMonth() - 1, currentDate.getFullYear());
+      var isInPreviousMonth = isDateInCurrentMonthAndYear(date, currentDate.getMonth() - 1, currentDate.getFullYear());
 
       if (pObj.author != null) {
         this.parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login, isInPreviousMonth);

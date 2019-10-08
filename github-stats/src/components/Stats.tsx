@@ -37,27 +37,6 @@ class Stats extends Component<{}, StatsState> {
     })
   }
 
-  // componentDidUpdate() {
-  //   setInterval(() => {
-  //     this.scrollToBottom();
-  //   }, 1000);
-  //   setInterval(() => {
-  //     this.scrollToTop();
-  //   }, 2000);
-  // }
-
-  // scrollToBottom = () => {
-  //   if (this.scrollDown !== null) {
-  //     this.scrollDown.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // };
-
-  // scrollToTop = () => {
-  //   if (this.scrollTop !== null) {
-  //     this.scrollTop.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // };
-
   compsFromList() {
     let size = this.state.participants.length;
 
@@ -69,9 +48,6 @@ class Stats extends Component<{}, StatsState> {
 
   render() {
     let divRender;
-    let allTimeStats = 'All Time Stats';
-    let monthlyStats = 'Last Month Stats';
-    let user = 'User';
 
     if (this.state.loading) {
       divRender = <div className="loading">
@@ -83,9 +59,7 @@ class Stats extends Component<{}, StatsState> {
       </div>;
     } else {
       divRender = <div className='stats'>
-        <div ref={(el) => { this.scrollTop = el; }} />
         {this.compsFromList()}
-        <div ref={(el) => { this.scrollDown = el; }} />
       </div>
     }
 
@@ -95,17 +69,6 @@ class Stats extends Component<{}, StatsState> {
           triggerParentUpdate={(data, repository, ranking) => this.getData(data, repository, ranking)}
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
-        {/* <div className='header'>
-          <div className="statstitle" style={{ marginLeft: 150, background: '#f8fc00' }}>
-            <label className="label" style={{ fontSize: 30 }}>{user}</label>
-          </div>
-          <div className="statstitle" style={{ marginLeft: 380, background: '#f8fc00' }}>
-            <label className="label" style={{ fontSize: 30 }}>{allTimeStats}</label>
-          </div>
-          <div className="statstitle" style={{ marginLeft: 250, background: '#CED0D2' }}>
-            <label className="label" style={{ fontSize: 30 }}>{monthlyStats}</label>
-          </div>
-        </div> */}
         <div className="title" style={{ left: '47.5%', background: '#f8fc00' }}>
           <label className="label" style={{ fontSize: 60 }}>{this.state.repository}</label>
         </div>
