@@ -8,7 +8,8 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import { getTimeInMillis } from '../utils/date';
-import { getUsers } from '../client/githubClient'
+import { getPullRequests } from '../client/githubClient';
+import { parseParent } from '../utils/parse';
 import User from '../data/User';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -98,9 +99,12 @@ class SideBar extends Component<SideProps, SideState> {
     console.log("som tu");
     this.props.triggerParentLoading(true);
 
-    var users = await getUsers(this.state.accessToken, this.state.repository, this.state.branch)
+    var pullRequests: Array<String> | undefined = await getPullRequests(this.state.accessToken, this.state.repository, this.state.branch);
 
-    this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking);
+    if (pullRequests !== undefined) {
+      var users: Array<[number, User]> = parseParent(pullRequests);
+      this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking);
+    }
   }
 
   render() {
