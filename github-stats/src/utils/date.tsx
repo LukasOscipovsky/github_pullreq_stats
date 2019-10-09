@@ -6,6 +6,10 @@ export const getTimeInMillis = (time: string): number => {
     return parseInt(time.replace(/\D/g, "")) * 24 * 60 * 1000;
 }
 
-export const isDateInCurrentMonthAndYear = (date: Date, month: number, year: number): boolean => {
+export const isDateInPreviousMonth = (date: Date): boolean => {
+    let currentDate: Date = new Date();
+    let month: number = currentDate.getMonth() === 1 ? 12 : currentDate.getMonth() - 1;
+    let year: number = currentDate.getMonth() === 1 ? currentDate.getFullYear() - 1 : currentDate.getFullYear();
+
     return date.getMonth() === month && date.getFullYear() === year;
 }

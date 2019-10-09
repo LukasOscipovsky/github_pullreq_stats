@@ -22,8 +22,6 @@ export const getQuery = (number: number, repository: string, afterToken: string 
     branchString = `baseRefName: "${branch}",`
   }
 
-  console.log(branchString);
-
   return `query {
     organization(login: "performgroup") {
       repository(name: "${repository}") {

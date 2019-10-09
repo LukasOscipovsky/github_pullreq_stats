@@ -7,11 +7,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
-import { getUrl, getHeaders, getQuery } from '../utils/login';
 import { getTimeInMillis } from '../utils/date';
-import ParseUtils from '../utils/ParseUtils';
+import { getUsers } from '../client/githubClient'
 import User from '../data/User';
-import axios from 'axios';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -46,7 +44,7 @@ class SideBar extends Component<SideProps, SideState> {
       timeToRender: ttr === null ? '' : ttr,
       branch: br === null ? '' : br,
       ranking: r === null ? false : Boolean(r)
-    })
+    });
   }
 
   handleClickShowAccessToken = () => {
@@ -71,9 +69,10 @@ class SideBar extends Component<SideProps, SideState> {
     localStorage.setItem('ranking', this.state.ranking.toString());
 
     this.getData();
+
     setInterval(() => {
       this.getData();
-    }, getTimeInMillis(this.state.timeToRender))
+    }, getTimeInMillis(this.state.timeToRender));
   }
 
   validateState(): boolean {
@@ -96,29 +95,10 @@ class SideBar extends Component<SideProps, SideState> {
   }
 
   async getData() {
+    console.log("som tu");
     this.props.triggerParentLoading(true);
 
-    var prNumber: number = 30;
-    var hasNextPage: boolean = true;
-    var after: string | null = null;
-    var pullRequests: Array<String> = [];
-
-    do {
-      await axios.post(getUrl(this.state.accessToken), {
-        query: getQuery(prNumber, this.state.repository, after, this.state.branch),
-        headers: getHeaders()
-      })
-        .then(response => {
-          var prs = response.data.data.organization.repository.pullRequests;
-
-          after = prs.pageInfo.endCursor;
-          hasNextPage = prs.pageInfo.hasNextPage;
-
-          pullRequests.push(prs.nodes)
-        })
-    } while (hasNextPage)
-
-    var users: Array<[number, User]> = ParseUtils.parseParent(pullRequests.concat(...pullRequests));
+    var users = await getUsers(this.state.accessToken, this.state.repository, this.state.branch)
 
     this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking);
   }
