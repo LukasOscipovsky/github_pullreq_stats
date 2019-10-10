@@ -96,7 +96,6 @@ class SideBar extends Component<SideProps, SideState> {
   }
 
   async getData() {
-    console.log("som tu");
     this.props.triggerParentLoading(true);
 
     var pullRequests: Array<String> | undefined = await getPullRequests(this.state.accessToken, this.state.repository, this.state.branch);
