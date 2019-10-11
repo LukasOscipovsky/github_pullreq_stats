@@ -9,7 +9,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import { getTimeInMillis } from '../utils/date';
 import { getPullRequests } from '../client/githubClient';
-import { parseParent } from '../utils/parse';
+import { parsePullRequests } from '../utils/parse';
 import User from '../data/User';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -101,7 +101,7 @@ class SideBar extends Component<SideProps, SideState> {
     var pullRequests: Array<String> | undefined = await getPullRequests(this.state.accessToken, this.state.repository, this.state.branch);
 
     if (pullRequests !== undefined) {
-      var users: Array<[number, User]> = parseParent(pullRequests);
+      var users: Array<[number, User]> = parsePullRequests(pullRequests);
       this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking);
     }
   }

@@ -2,7 +2,7 @@ import User from '../data/User';
 import { isDateInPreviousMonth } from './date'
 
 
-export const parseParent = (prs: Array<String>): Array<[number, User]> => {
+export const parsePullRequests = (prs: Array<String>): Array<[number, User]> => {
   var users: Array<User> = [];
 
   prs.forEach(pr => {
