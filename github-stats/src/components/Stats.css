@@ -35,34 +35,18 @@
 
 .title {
     position: fixed;
-    top: 45%;
-    width: 100vh;
-    left: 71.5%; 
-    background: '#f8fc00';
+    width: 110%;
+    left: 800px;
     transform: rotate(90deg);
     box-shadow: 2px 3px 8px #000000;
 }
 
-.header {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.header .statstitle {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    box-shadow: 2px 3px 8px #000000;
-    border-radius: 5px;
-}
-
-.header .statstitle .label, .title .label {
+.title .label {
     font-family: Trim, 'DAZN-Bold', Oscine;
     font-style: normal;
     font-weight: 700;
     color: #242d34;
-    margin-top: 20px;
+    margin-left: 750px;
     text-transform: capitalize;
     padding: 3px;
 }

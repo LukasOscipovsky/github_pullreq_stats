@@ -70,7 +70,7 @@ class Stats extends Component<{}, StatsState> {
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
         {divRender}
-        <div className="title" style={{ left: '71.5%', background: '#f8fc00' }}>
+        <div className="title" style={{ background: '#f8fc00' }}>
           <label className="label" style={{ fontSize: 60 }}>{this.state.repository}</label>
         </div>
       </div>
