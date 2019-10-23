@@ -8,4 +8,4 @@ services:
     #privileged: true
     #user: root
     ports:
-      - "3000:7777"
+      - "3001:7777"
