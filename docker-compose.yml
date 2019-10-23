@@ -1,0 +1,11 @@
+# see compatibility table: https://github.com/docker/compose/releases
+# see networking info: https://docs.docker.com/compose/networking/
+version: '3'
+services:     
+  stats:
+    build:
+      context: ./github-stats
+    #privileged: true
+    #user: root
+    ports:
+      - "3000:7777"
