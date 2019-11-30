@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent } from 'react';
+import React, { Component } from 'react';
 import { slide as Menu } from "react-burger-menu";
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -141,7 +141,7 @@ class SideBar extends Component<SideProps, SideState> {
           <TextField
             required
             label="Organization"
-            onChange={event => this.setState({ organization: event.currentTarget.value})}
+            onChange={event => this.setState({ organization: event.currentTarget.value })}
             value={this.state.organization}
             variant="filled"
             style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20 }}
@@ -149,7 +149,7 @@ class SideBar extends Component<SideProps, SideState> {
           <TextField
             required
             label="Repository"
-            onChange={event => this.setState({ repository: event.currentTarget.value})}
+            onChange={event => this.setState({ repository: event.currentTarget.value })}
             value={this.state.repository}
             variant="filled"
             style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20 }}

@@ -35,8 +35,8 @@
 
 .title {
     position: fixed;
-    width: 110%;
-    left: 800px;
+    width: 100%;
+    left: 47%;
     transform: rotate(90deg);
     box-shadow: 2px 3px 8px #000000;
 }
