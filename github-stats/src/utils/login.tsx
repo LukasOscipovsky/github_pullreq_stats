@@ -10,7 +10,7 @@ export const getHeaders = (): Headers => {
   })
 }
 
-export const getQuery = (number: number, repository: string, afterToken: string | null, branch: string | null): string => {
+export const getQuery = (number: number, organization: string, repository: string, afterToken: string | null, branch: string | null): string => {
   var after: string = '';
   var branchString: string = '';
 
@@ -23,7 +23,7 @@ export const getQuery = (number: number, repository: string, afterToken: string 
   }
 
   return `query {
-    organization(login: "performgroup") {
+    organization(login: "${organization}") {
       repository(name: "${repository}") {
         pullRequests(first: ${number}, ${after} ${branchString} states: MERGED) {
           pageInfo {

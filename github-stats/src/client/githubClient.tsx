@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getUrl, getHeaders, getQuery } from '../utils/login';
 
-export const getPullRequests = async (accessToken: string, repository: string, branch: string) => {
+export const getPullRequests = async (accessToken: string, organization: string, repository: string, branch: string) => {
     var prNumber: number = 30;
     var pullRequests: Array<String> = [];
     var hasNextPage: boolean = true;
@@ -9,7 +9,7 @@ export const getPullRequests = async (accessToken: string, repository: string, b
 
     do {
         let response: any = await axios.post(getUrl(accessToken), {
-            query: getQuery(prNumber, repository, after, branch),
+            query: getQuery(prNumber, organization, repository, after, branch),
             headers: getHeaders()
         })
 

@@ -18,6 +18,7 @@ import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 
 interface SideState {
   accessToken: string;
+  organization: string;
   repository: string;
   showAccessToken: boolean;
   timeToRender: string;
@@ -33,6 +34,7 @@ interface SideProps {
 class SideBar extends Component<SideProps, SideState> {
   componentWillMount() {
     const ac = localStorage.getItem('accessToken');
+    const org = localStorage.getItem('organization');
     const repo = localStorage.getItem('repository');
     const ttr = localStorage.getItem('timeToRender');
     const br = localStorage.getItem('branch');
@@ -40,6 +42,7 @@ class SideBar extends Component<SideProps, SideState> {
 
     this.setState({
       accessToken: ac === null ? '' : ac,
+      organization: org === null ? '' : org,
       repository: repo === null ? '' : repo,
       showAccessToken: false,
       timeToRender: ttr === null ? '' : ttr,
@@ -54,16 +57,13 @@ class SideBar extends Component<SideProps, SideState> {
     })
   }
 
-  handleOnChange(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
-    this.setState({ repository: event.currentTarget.value })
-  }
-
   getDataInInterval() {
     if (!this.validateState()) {
       return;
     }
 
     localStorage.setItem('accessToken', this.state.accessToken);
+    localStorage.setItem('organization', this.state.organization);
     localStorage.setItem('repository', this.state.repository);
     localStorage.setItem('timeToRender', this.state.timeToRender);
     localStorage.setItem('branch', this.state.branch);
@@ -79,6 +79,11 @@ class SideBar extends Component<SideProps, SideState> {
   validateState(): boolean {
     if (this.state.accessToken === undefined || this.state.accessToken === '') {
       alert("AccessToken has not been provided!")
+      return false;
+    }
+
+    if (this.state.organization === undefined || this.state.organization === '') {
+      alert("Organization has not been provided!")
       return false;
     }
 
@@ -98,7 +103,8 @@ class SideBar extends Component<SideProps, SideState> {
   async getData() {
     this.props.triggerParentLoading(true);
 
-    var pullRequests: Array<String> | undefined = await getPullRequests(this.state.accessToken, this.state.repository, this.state.branch);
+    var pullRequests: Array<String> | undefined = await getPullRequests(this.state.accessToken,
+      this.state.organization, this.state.repository, this.state.branch);
 
     if (pullRequests !== undefined) {
       var users: Array<[number, User]> = parsePullRequests(pullRequests);
@@ -134,8 +140,16 @@ class SideBar extends Component<SideProps, SideState> {
           />
           <TextField
             required
+            label="Organization"
+            onChange={event => this.setState({ organization: event.currentTarget.value})}
+            value={this.state.organization}
+            variant="filled"
+            style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20 }}
+          />
+          <TextField
+            required
             label="Repository"
-            onChange={event => this.handleOnChange(event)}
+            onChange={event => this.setState({ repository: event.currentTarget.value})}
             value={this.state.repository}
             variant="filled"
             style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20 }}
