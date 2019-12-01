@@ -10,6 +10,7 @@ interface StatsState {
   participants: Array<[number, User]>;
   repository: string;
   ranking: Boolean;
+  displaySideRepo: boolean;
 }
 
 class Stats extends Component<{}, StatsState> {
@@ -19,7 +20,8 @@ class Stats extends Component<{}, StatsState> {
       loading: false,
       participants: [],
       repository: '',
-      ranking: false
+      ranking: false,
+      displaySideRepo: false
     }
   }
 
@@ -28,7 +30,8 @@ class Stats extends Component<{}, StatsState> {
       loading: false,
       participants: data,
       repository: repository,
-      ranking: ranking
+      ranking: ranking,
+      displaySideRepo: true
     })
   }
 
@@ -65,7 +68,7 @@ class Stats extends Component<{}, StatsState> {
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
         {divRender}
-        <div className="title" style={{ background: '#f8fc00' }}>
+        <div className="title" style={{ display: this.state.displaySideRepo ? 'block' : 'none', background: '#f8fc00' }}>
           <label className="label" style={{ fontSize: 60 }}>{this.state.repository}</label>
         </div>
       </div>
