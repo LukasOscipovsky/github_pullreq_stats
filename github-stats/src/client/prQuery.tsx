@@ -1,16 +1,4 @@
-const url: string = 'https://api.github.com/graphql';
-
-export const getUrl = (accessToken: string): string => {
-  return url + '?access_token=' + accessToken;
-}
-
-export const getHeaders = (): Headers => {
-  return new Headers({
-    'Content-Type': 'application/json'
-  })
-}
-
-export const getQuery = (number: number, organization: string, repository: string, afterToken: string | null, branch: string | null): string => {
+export const getPrData = (number: number, organization: string, repository: string, afterToken: string | null, branch: string | null): string => {
   var after: string = '';
   var branchString: string = '';
 

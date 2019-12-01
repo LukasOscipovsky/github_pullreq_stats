@@ -8,7 +8,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import { getTimeInMillis } from '../utils/date';
-import { getPullRequests } from '../client/githubClient';
+import { getOrgOrRepo, getPullRequests } from '../client/githubClient';
 import { parsePullRequests } from '../utils/parse';
 import User from '../data/User';
 import FormControl from '@material-ui/core/FormControl/FormControl';
@@ -57,7 +57,7 @@ class SideBar extends Component<SideProps, SideState> {
     })
   }
 
-  getDataInInterval() {
+  getDataInInterval(): void {
     if (!this.validateState()) {
       return;
     }
@@ -101,15 +101,27 @@ class SideBar extends Component<SideProps, SideState> {
   }
 
   async getData() {
+    var orgOrRepo: any = await getOrgOrRepo(this.state.accessToken, this.state.organization, this.state.repository);
+
+    if (orgOrRepo.data.data.organization === null) {
+      alert('organization does not exist');
+    }
+
+    if (orgOrRepo.data.data.organization.repository === null) {
+      alert('repository does not exist');
+    }
+
     this.props.triggerParentLoading(true);
 
     var pullRequests: Array<String> | undefined = await getPullRequests(this.state.accessToken,
       this.state.organization, this.state.repository, this.state.branch);
 
-    if (pullRequests !== undefined) {
-      var users: Array<[number, User]> = parsePullRequests(pullRequests);
-      this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking);
+    if (pullRequests === undefined) {
+      return;
     }
+
+    var users: Array<[number, User]> = parsePullRequests(pullRequests);
+    this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking);
   }
 
   render() {

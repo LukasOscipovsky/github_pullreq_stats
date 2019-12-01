@@ -1,5 +1,26 @@
 import axios from 'axios';
-import { getUrl, getHeaders, getQuery } from '../utils/login';
+import { getPrData } from './prQuery';
+import { getOrgAndRepo } from './repoQuery';
+
+const url: string = 'https://api.github.com/graphql';
+
+const getUrl = (accessToken: string): string => {
+    return url + '?access_token=' + accessToken;
+}
+
+const getHeaders = (): Headers => {
+    return new Headers({
+        'Content-Type': 'application/json'
+    })
+}
+
+export const getOrgOrRepo = async (accessToken: string, organization: string, repository: string) => {
+    return await axios.post(getUrl(accessToken), {
+        query: getOrgAndRepo(organization, repository),
+        headers: getHeaders()
+    })
+}
+
 
 export const getPullRequests = async (accessToken: string, organization: string, repository: string, branch: string) => {
     var prNumber: number = 30;
@@ -9,15 +30,9 @@ export const getPullRequests = async (accessToken: string, organization: string,
 
     do {
         let response: any = await axios.post(getUrl(accessToken), {
-            query: getQuery(prNumber, organization, repository, after, branch),
+            query: getPrData(prNumber, organization, repository, after, branch),
             headers: getHeaders()
         })
-
-        if (response.data.data.organization.repository === null) {
-            alert('repository does not exist');
-            hasNextPage = false;
-            return;
-        }
 
         let prs = response.data.data.organization.repository.pullRequests;
 

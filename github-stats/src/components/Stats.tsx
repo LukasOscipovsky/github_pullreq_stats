@@ -13,13 +13,8 @@ interface StatsState {
 }
 
 class Stats extends Component<{}, StatsState> {
-  scrollTop: HTMLDivElement | null;
-  scrollDown: HTMLDivElement | null;
-
   constructor(props: any) {
     super(props);
-    this.scrollTop = null;
-    this.scrollDown = null;
     this.state = {
       loading: false,
       participants: [],
