@@ -7,41 +7,72 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 interface StatsState {
   loading: boolean;
-  participants: Array<[number, User]>;
+  prToRender: Array<[number, User]>;
   repository: string;
   ranking: Boolean;
   displaySideRepo: boolean;
+  presentationMode: boolean;
 }
 
+const userCompsSize: number = 5;
+
 class Stats extends Component<{}, StatsState> {
+  private currentIndex: number = 0;
+  private participants: Array<[number, User]> = [];
+
   constructor(props: any) {
     super(props);
     this.state = {
       loading: false,
-      participants: [],
+      prToRender: [],
       repository: '',
       ranking: false,
-      displaySideRepo: false
+      displaySideRepo: false,
+      presentationMode: true
     }
   }
 
   getData(data: Array<[number, User]>, repository: string, ranking: Boolean) {
     this.setState({
       loading: false,
-      participants: data,
       repository: repository,
       ranking: ranking,
       displaySideRepo: true
     })
+
+    this.participants = data;
+
+    if (!this.state.presentationMode || data.length <= userCompsSize) {
+      this.compsFromList();
+      return;
+    }
+    setInterval(() => {
+      this.compsFromList();
+    }, 5000);
   }
 
   compsFromList() {
-    let size = this.state.participants.length;
+    if (!this.state.presentationMode || this.participants.length <= userCompsSize) {
+      this.setState({ prToRender: this.participants });
+    }
 
-    return this.state.participants
-      .map((p) => {
-        return (<UserBar user={p} sizeOfArray={size} ranking={this.state.ranking} />)
-      });
+    console.log(this.currentIndex);
+    console.log(this.participants.length);
+
+    if (this.currentIndex > this.participants.length) {
+      this.currentIndex = 0;
+    }
+
+    let temp = this.currentIndex;
+    this.currentIndex = this.currentIndex + userCompsSize;
+
+    this.setState({ prToRender: this.participants.slice(temp, this.currentIndex) });
+  }
+
+  getComps() {
+    return this.state.prToRender.map((p) => {
+      return (<UserBar user={p} sizeOfArray={this.participants.length} ranking={this.state.ranking} />)
+    });
   }
 
   render() {
@@ -57,7 +88,7 @@ class Stats extends Component<{}, StatsState> {
       </div>;
     } else {
       divRender = <div className='stats'>
-        {this.compsFromList()}
+        {this.getComps()}
       </div>
     }
 
