@@ -24,10 +24,11 @@ interface SideState {
   timeToRender: string;
   branch: string;
   ranking: Boolean;
+  presentation: Boolean;
 }
 
 interface SideProps {
-  triggerParentUpdate(participants: Array<[number, User]>, repository: string, ranking: Boolean): void
+  triggerParentUpdate(participants: Array<[number, User]>, repository: string, ranking: Boolean, presentation: Boolean): void
   triggerParentLoading(loading: boolean): void
 }
 
@@ -39,6 +40,7 @@ class SideBar extends Component<SideProps, SideState> {
     const ttr = localStorage.getItem('timeToRender');
     const br = localStorage.getItem('branch');
     const r = localStorage.getItem('ranking');
+    const pre = localStorage.getItem('presentation');
 
     this.setState({
       accessToken: ac === null ? '' : ac,
@@ -47,7 +49,8 @@ class SideBar extends Component<SideProps, SideState> {
       showAccessToken: false,
       timeToRender: ttr === null ? '' : ttr,
       branch: br === null ? '' : br,
-      ranking: r === null ? false : Boolean(r)
+      ranking: r === null ? false : Boolean(r),
+      presentation: pre === null ? false : Boolean(pre)
     });
   }
 
@@ -68,6 +71,7 @@ class SideBar extends Component<SideProps, SideState> {
     localStorage.setItem('timeToRender', this.state.timeToRender);
     localStorage.setItem('branch', this.state.branch);
     localStorage.setItem('ranking', this.state.ranking.toString());
+    localStorage.setItem('presentation', this.state.presentation.toString());
 
     this.getData();
 
@@ -105,10 +109,12 @@ class SideBar extends Component<SideProps, SideState> {
 
     if (orgOrRepo.data.data.organization === null) {
       alert('organization does not exist');
+      return;
     }
 
     if (orgOrRepo.data.data.organization.repository === null) {
       alert('repository does not exist');
+      return;
     }
 
     this.props.triggerParentLoading(true);
@@ -121,7 +127,7 @@ class SideBar extends Component<SideProps, SideState> {
     }
 
     var users: Array<[number, User]> = parsePullRequests(pullRequests);
-    this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking);
+    this.props.triggerParentUpdate(users, this.state.repository, this.state.ranking, this.state.presentation);
   }
 
   render() {
@@ -197,6 +203,26 @@ class SideBar extends Component<SideProps, SideState> {
               inputProps={{
                 name: 'ranking',
                 id: 'outlined-ranking',
+              }}
+            >
+              <MenuItem value={0}>Disabled</MenuItem>
+              <MenuItem value={1}>Enabled</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl
+            style={{ width: 200, background: 'white', marginTop: 20 }}
+            variant="outlined">
+            <InputLabel style={{ marginTop: 15 }} htmlFor="outlined-presentation">
+              Presentation Mode
+            </InputLabel>
+            <Select
+              style={{ padding: 10 }}
+              variant="outlined"
+              value={this.state.presentation ? 1 : 0}
+              onChange={event => this.setState({ presentation: parseInt(event.target.value) === 1 ? true : false })}
+              inputProps={{
+                name: 'presentation',
+                id: 'outlined-presentation',
               }}
             >
               <MenuItem value={0}>Disabled</MenuItem>

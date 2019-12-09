@@ -11,13 +11,14 @@ interface StatsState {
   repository: string;
   ranking: Boolean;
   displaySideRepo: boolean;
-  presentationMode: boolean;
+  presentationMode: Boolean;
 }
 
-const userCompsSize: number = 5;
+const userCompsSize: number = 10;
 
 class Stats extends Component<{}, StatsState> {
   private currentIndex: number = 0;
+  private interval: any = null;
   private participants: Array<[number, User]> = [];
 
   constructor(props: any) {
@@ -28,37 +29,38 @@ class Stats extends Component<{}, StatsState> {
       repository: '',
       ranking: false,
       displaySideRepo: false,
-      presentationMode: true
+      presentationMode: false
     }
   }
 
-  getData(data: Array<[number, User]>, repository: string, ranking: Boolean) {
+  getData(data: Array<[number, User]>, repository: string, ranking: Boolean, presentation: Boolean) {
     this.setState({
       loading: false,
       repository: repository,
       ranking: ranking,
-      displaySideRepo: true
+      displaySideRepo: true,
+      presentationMode: presentation
     })
 
     this.participants = data;
+    clearInterval(this.interval);
+
+    console.log(this.state.presentationMode)
 
     if (!this.state.presentationMode || data.length <= userCompsSize) {
-      this.compsFromList();
+      this.setState({ prToRender: this.participants });
+      this.getComps();
       return;
     }
-    setInterval(() => {
-      this.compsFromList();
-    }, 5000);
+
+    this.setDataForInterval();
+
+    this.interval = setInterval(() => {
+      this.setDataForInterval();
+    }, 10000);
   }
 
-  compsFromList() {
-    if (!this.state.presentationMode || this.participants.length <= userCompsSize) {
-      this.setState({ prToRender: this.participants });
-    }
-
-    console.log(this.currentIndex);
-    console.log(this.participants.length);
-
+  setDataForInterval() {
     if (this.currentIndex > this.participants.length) {
       this.currentIndex = 0;
     }
@@ -95,7 +97,7 @@ class Stats extends Component<{}, StatsState> {
     return (
       <div className='main'>
         <SideBar
-          triggerParentUpdate={(data, repository, ranking) => this.getData(data, repository, ranking)}
+          triggerParentUpdate={(data, repository, ranking, presentation) => this.getData(data, repository, ranking, presentation)}
           triggerParentLoading={(isLoadingEnabled) => this.setState({ loading: isLoadingEnabled })}
         />
         {divRender}
