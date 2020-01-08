@@ -8,8 +8,8 @@ export const getTimeInMillis = (time: string): number => {
 
 export const isDateInPreviousMonth = (date: Date): boolean => {
     let currentDate: Date = new Date();
-    let month: number = currentDate.getMonth() === 1 ? 12 : currentDate.getMonth() - 1;
-    let year: number = currentDate.getMonth() === 1 ? currentDate.getFullYear() - 1 : currentDate.getFullYear();
+    let month: number = currentDate.getMonth() === 0 ? 11 : currentDate.getMonth() - 1;
+    let year: number = currentDate.getMonth() === 0 ? currentDate.getFullYear() - 1 : currentDate.getFullYear();
 
     return date.getMonth() === month && date.getFullYear() === year;
 }
