@@ -25,6 +25,10 @@ interface SideState {
   branch: string;
   ranking: Boolean;
   presentation: Boolean;
+  accessTokenErrorState: boolean,
+  organizationErrorState: boolean,
+  repositoryErrorState: boolean,
+  refreshErrorState: boolean,
 }
 
 interface SideProps {
@@ -50,7 +54,11 @@ class SideBar extends Component<SideProps, SideState> {
       timeToRender: ttr === null ? '' : ttr,
       branch: br === null ? '' : br,
       ranking: r === null ? false : Boolean(r),
-      presentation: pre === null ? false : Boolean(pre)
+      presentation: pre === null ? false : Boolean(pre),
+      accessTokenErrorState: false,
+      organizationErrorState: false,
+      repositoryErrorState: false,
+      refreshErrorState: false
     });
   }
 
@@ -81,23 +89,19 @@ class SideBar extends Component<SideProps, SideState> {
   }
 
   validateState(): boolean {
-    if (this.state.accessToken === undefined || this.state.accessToken === '') {
-      alert("AccessToken has not been provided!")
+    if (this.state.accessTokenErrorState || this.state.accessToken.length === 0) {
       return false;
     }
 
-    if (this.state.organization === undefined || this.state.organization === '') {
-      alert("Organization has not been provided!")
+    if (this.state.organizationErrorState || this.state.organization.length === 0) {
       return false;
     }
 
-    if (this.state.repository === undefined || this.state.repository === '') {
-      alert("Repository has not been provided!")
+    if (this.state.repositoryErrorState || this.state.repository.length === 0) {
       return false;
     }
 
-    if (this.state.timeToRender === undefined || this.state.timeToRender === '') {
-      alert("Refresh interval has not been provided!")
+    if (this.state.refreshErrorState || this.state.timeToRender.length === 0) {
       return false;
     }
 
@@ -138,11 +142,15 @@ class SideBar extends Component<SideProps, SideState> {
           <TextField
             required
             label="AccessToken"
-            onChange={event => this.setState({ accessToken: event.currentTarget.value })}
+            onChange={event => this.setState({
+              accessToken: event.currentTarget.value,
+              accessTokenErrorState: event.currentTarget.value.length <= 0
+            })}
             variant="filled"
             value={this.state.accessToken}
             style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white' }}
             type={(this.state.showAccessToken ? 'text' : 'password')}
+            error={this.state.accessTokenErrorState}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -159,17 +167,25 @@ class SideBar extends Component<SideProps, SideState> {
           <TextField
             required
             label="Organization"
-            onChange={event => this.setState({ organization: event.currentTarget.value })}
+            onChange={event => this.setState({
+              organization: event.currentTarget.value,
+              organizationErrorState: event.currentTarget.value.length <= 0
+            })}
             value={this.state.organization}
             variant="filled"
+            error={this.state.organizationErrorState}
             style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20 }}
           />
           <TextField
             required
             label="Repository"
-            onChange={event => this.setState({ repository: event.currentTarget.value })}
+            onChange={event => this.setState({
+              repository: event.currentTarget.value,
+              repositoryErrorState: event.currentTarget.value.length <= 0
+            })}
             value={this.state.repository}
             variant="filled"
+            error={this.state.repositoryErrorState}
             style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20 }}
           />
           <TextField
@@ -183,9 +199,13 @@ class SideBar extends Component<SideProps, SideState> {
             <TextField
               required
               label="Refresh Interval"
-              onChange={event => this.setState({ timeToRender: event.currentTarget.value })}
+              onChange={event => this.setState({
+                timeToRender: event.currentTarget.value,
+                refreshErrorState: event.currentTarget.value.length <= 0
+              })}
               variant="filled"
               value={this.state.timeToRender}
+              error={this.state.refreshErrorState}
               style={{ fontFamily: 'Trim,DAZN-Bold,Oscine', borderColor: 'black', width: 200, background: 'white', marginTop: 20 }}
             />
           </Tooltip>

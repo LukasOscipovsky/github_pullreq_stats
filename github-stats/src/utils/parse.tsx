@@ -5,11 +5,15 @@ import { isDateInPreviousMonth } from './date'
 export const parsePullRequests = (prs: Array<String>): Array<[number, User]> => {
   var users: Array<User> = [];
 
+  let currentDate: Date = new Date();
+  let month: number = currentDate.getMonth() === 0 ? 11 : currentDate.getMonth() - 1;
+  let year: number = currentDate.getMonth() === 0 ? currentDate.getFullYear() - 1 : currentDate.getFullYear();
+
   prs.forEach(pr => {
     var pObj = JSON.parse(JSON.stringify(pr));
     var date = new Date(pObj.closedAt);
 
-    var isInPreviousMonth = isDateInPreviousMonth(date);
+    var isInPreviousMonth = isDateInPreviousMonth(date, month, year);
 
     if (pObj.author !== null && pObj.participants !== undefined) {
       parse(users, pObj.participants.nodes, pObj.reviewRequests.nodes, pObj.reviews.nodes, pObj.author.login, isInPreviousMonth);
