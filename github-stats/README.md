@@ -1,44 +1,35 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Github Stats Tool
 
-## Available Scripts
+## Goal
 
-In the project directory, you can run:
+The project was created to motivate people in the team to do the reviews https://www.atlassian.com/agile/software-development/code-reviews
 
-### `npm start`
+Github Stats tool displays stats of the reviews based on given organization and repository in periodic intervals set by app. 
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Tool takes pull requests data and parse them to calculate all the approves/request changes and given comments per user asked to do review on the pull request.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Users are ordered by the overall percentage of the approves/requestChanges to number of assignemts of the user to PRs on giver repository.
 
-### `npm test`
+There is also percentage for last month per user shown as well.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+There is option to highlight most and least active user. Most and least active user is calculated based on last month stats, that means each month there is option to have
+different highlighted users.
 
-### `npm run build`
+!!! Tool is not made to punish anybody in the team, just do the opposite and motivate people to do the reviews based on overall standing and increase overall quality 
+of the code.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Mandatory fields: personal access token, organization, repository and refresh interval.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Optional: branch, if branch is not filled, then it will take all branches in repository
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Ranking: highlighting most active and least active user
 
-### `npm run eject`
+## Team
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+[![img](https://github.com/lukaso89?size=60)](https://github.com/lukaso89)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Tech
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- React
+- Typescript
+- Github GraphQl API
