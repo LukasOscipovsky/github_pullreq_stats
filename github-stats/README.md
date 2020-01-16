@@ -26,10 +26,14 @@ Ranking: highlighting most active and least active user
 
 ## Team
 
-[![img](https://github.com/lukaso89?size=60)](https://github.com/lukaso89)
+[![img](https://github.com/LukasOscipovsky?size=60)](https://github.com/LukasOscipovsky)
 
 ## Tech
 
 - React
 - Typescript
 - Github GraphQl API
+
+## Usage
+
+Tool is available on personal AWS S3 bucket: http://github-stats-tool.s3-website.eu-central-1.amazonaws.com/
