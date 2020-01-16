@@ -90,18 +90,22 @@ class SideBar extends Component<SideProps, SideState> {
 
   validateState(): boolean {
     if (this.state.accessTokenErrorState || this.state.accessToken.length === 0) {
+      this.setState({ accessTokenErrorState: true })
       return false;
     }
 
     if (this.state.organizationErrorState || this.state.organization.length === 0) {
+      this.setState({ organizationErrorState: true })
       return false;
     }
 
     if (this.state.repositoryErrorState || this.state.repository.length === 0) {
+      this.setState({ repositoryErrorState: true })
       return false;
     }
 
     if (this.state.refreshErrorState || this.state.timeToRender.length === 0) {
+      this.setState({ refreshErrorState: true })
       return false;
     }
 

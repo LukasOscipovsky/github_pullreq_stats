@@ -45,8 +45,6 @@ class Stats extends Component<{}, StatsState> {
     this.participants = data;
     clearInterval(this.interval);
 
-    console.log(this.state.presentationMode)
-
     if (!this.state.presentationMode || data.length <= userCompsSize) {
       this.setState({ prToRender: this.participants });
       this.getComps();
