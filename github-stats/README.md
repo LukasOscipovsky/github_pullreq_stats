@@ -26,7 +26,8 @@ Ranking: highlighting most active and least active user
 
 ## Team
 
-[![img](https://github.com/LukasOscipovsky?size=60)](https://github.com/LukasOscipovsky)
+[![img](https://avatars3.githubusercontent.com/u/34230432?s=460&v=4](https://avatars3.githubusercontent.com/u/34230432?s=460&v=4)
+
 
 ## Tech
 
