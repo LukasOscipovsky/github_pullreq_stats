@@ -15,6 +15,8 @@ import FormControl from '@material-ui/core/FormControl/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
+import { getClient } from '../client/apolloClient'
+import { ApolloProvider } from '@apollo/react-hooks';
 
 interface SideState {
   accessToken: string;
@@ -73,11 +75,13 @@ class SideBar extends Component<SideProps, SideState> {
     localStorage.setItem('ranking', this.state.ranking.toString());
     localStorage.setItem('presentation', this.state.presentation.toString());
 
-    this.getData();
+    getClient(this.state.accessToken, this.state.organization)
 
-    setInterval(() => {
-      this.getData();
-    }, getTimeInMillis(this.state.timeToRender));
+    // this.getData();
+
+    // setInterval(() => {
+    //   this.getData();
+    // }, getTimeInMillis(this.state.timeToRender));
   }
 
   validateState(): boolean {
